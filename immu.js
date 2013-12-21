@@ -59,9 +59,8 @@ function api (storage, deleted) {
   return iface;
 
   function patch (diff_in) {
-    // Allows for more than one names, so that we can update a value
-    // somewhere deep in the tree and return updated version of the
-    // whole tree.
+    // diff_in can be a tree of updated values to to patch on top of
+    // current values.
 
     if (arguments.length >= 2) {
       diff_in = {};
