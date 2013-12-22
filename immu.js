@@ -45,11 +45,17 @@ function api (storage, deleted, previous) {
   }
 
   function get (name) {
-    return (deleted[name]
-            ? null
-            : (name in storage
-               ? storage[name]
-               : previous(name)));
+    var value = (deleted[name]
+                 ? null
+                 : (name in storage
+                    ? storage[name]
+                    : previous(name)));
+
+    return (arguments.length === 1
+            ? value
+            : (is_api(value) // recurse
+               ? value.apply(null, slice(arguments, 1))
+               : null));
   }
 
   get.patch = patch;
@@ -169,5 +175,7 @@ assert.deepEqual(v4.dump(), { d: { '1': 5 }, h: 8 });
 assert.deepEqual(v5.dump(), { a: { b: 2, c: 3 }, d: { e: 5, f: 7 } });
 assert.deepEqual(v6.dump(), { a: { b: 8, g: { h: 9 }, c: 3 }, d: { e: 5, f: 7 } });
 assert.deepEqual(v7.dump(), { a: { g: {}, b: 8, c: 3 }, d: { e: 5, f: 7 } });
+assert.deepEqual(v6("a", "g", "h"), 9);
+assert.deepEqual(v6("a", "b", "c", "d"), null);
 assert.deepEqual(v4.dump(), v4.compact().dump());
 assert.deepEqual(v4.compact().back().dump(), {});
