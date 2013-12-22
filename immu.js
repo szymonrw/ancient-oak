@@ -57,6 +57,7 @@ function api (storage, deleted, previous) {
   get.keys = keys;
   get.dump = dump;
   get.back = back;
+  get.compact = compact;
 
   return get;
 
@@ -87,7 +88,6 @@ function api (storage, deleted, previous) {
   function rm (name) {
     if (arguments.length > 1) {
       var element = get(name);
-      console.log(element, is_api(element));
       if (is_api(element)) {
         return patch(name, element.rm.apply(null, slice(arguments, 1)));
       }
@@ -131,6 +131,9 @@ function api (storage, deleted, previous) {
     return previous;
   }
 
+  function compact () {
+    return store(dump());
+  }
   // get.on = on;
   // get.map = map;
   // get.forEach = forEach;
@@ -149,7 +152,6 @@ var v7 = v6.rm("a", "g", "h");
 
 var assert = require("assert");
 
-console.log(v1.keys(), v2.back().keys());
 console.log("1", v1.dump());
 console.log("2", v2.dump());
 console.log("3", v3.dump());
@@ -165,3 +167,5 @@ assert.deepEqual(v4.dump(), { d: { '1': 5 }, h: 8 });
 assert.deepEqual(v5.dump(), { a: { b: 2, c: 3 }, d: { e: 5, f: 7 } });
 assert.deepEqual(v6.dump(), { a: { b: 8, g: { h: 9 }, c: 3 }, d: { e: 5, f: 7 } });
 assert.deepEqual(v7.dump(), { a: { g: {}, b: 8, c: 3 }, d: { e: 5, f: 7 } });
+assert.deepEqual(v4.dump(), v4.compact().dump());
+assert.deepEqual(v4.compact().back().dump(), {});
