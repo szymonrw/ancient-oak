@@ -44,6 +44,15 @@ function api (storage, deleted, previous) {
     previous.back = function back () { return previous; };
   }
 
+  get.patch = patch;
+  get.rm = rm;
+  get.keys = keys;
+  get.dump = dump;
+  get.back = back;
+  get.compact = compact;
+
+  return get;
+
   function get (name) {
     var value = (deleted[name]
                  ? null
@@ -57,15 +66,6 @@ function api (storage, deleted, previous) {
                ? value.apply(null, slice(arguments, 1))
                : null));
   }
-
-  get.patch = patch;
-  get.rm = rm;
-  get.keys = keys;
-  get.dump = dump;
-  get.back = back;
-  get.compact = compact;
-
-  return get;
 
   function patch (diff_in) {
     // diff_in can be a tree of updated values to to patch on top of
