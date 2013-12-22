@@ -90,6 +90,8 @@ function api (storage, deleted, previous) {
       var element = get(name);
       if (is_api(element)) {
         return patch(name, element.rm.apply(null, slice(arguments, 1)));
+      } else {
+        return get;
       }
     }
 
