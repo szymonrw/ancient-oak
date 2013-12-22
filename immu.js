@@ -157,6 +157,7 @@ var v4 = v3.rm("a").rm("b").rm("c").rm("d", "0");
 var v5 = store({a: {b: 2, c: 3}, d: {e: 5, f: 7}});
 var v6 = v5.patch({a: {b: 8, g: {h: 9}}});
 var v7 = v6.rm("a", "g", "h");
+var v8 = store({a: 1, b: 2}).rm("a").patch({a: 3});
 
 var assert = require("assert");
 
@@ -175,6 +176,7 @@ assert.deepEqual(v4.dump(), { d: { '1': 5 }, h: 8 });
 assert.deepEqual(v5.dump(), { a: { b: 2, c: 3 }, d: { e: 5, f: 7 } });
 assert.deepEqual(v6.dump(), { a: { b: 8, g: { h: 9 }, c: 3 }, d: { e: 5, f: 7 } });
 assert.deepEqual(v7.dump(), { a: { g: {}, b: 8, c: 3 }, d: { e: 5, f: 7 } });
+assert.deepEqual(v8.dump(), { a: 3, b: 2});
 assert.deepEqual(v6("a", "g", "h"), 9);
 assert.deepEqual(v6("a", "b", "c", "d"), null);
 assert.deepEqual(v4.dump(), v4.compact().dump());
