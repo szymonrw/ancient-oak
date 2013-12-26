@@ -1,6 +1,7 @@
 "use strict";
 
 var arr_slice = Array.prototype.slice;
+var freeze = Object.freeze || function () {};
 
 function slice (array, start, end) {
   return arr_slice.call(array, start, end);
@@ -50,6 +51,15 @@ function api (storage, deleted, previous) {
   get.dump = dump;
   get.back = back;
   get.compact = compact;
+
+  freeze(storage);
+  freeze(deleted);
+
+  for (var name in get) {
+    freeze(get[name]);
+  }
+
+  freeze(get);
 
   return get;
 
