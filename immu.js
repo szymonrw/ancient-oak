@@ -3,6 +3,23 @@
 var arr_slice = Array.prototype.slice;
 var freeze = Object.freeze || function () {};
 
+function freeze_fields (object) {
+  for (var name in object) {
+    freeze(object[name]);
+  }
+  freeze(object);
+}
+
+var dummy_api = (function () {
+  function get () { return null; };
+  get.keys = function keys () { return []; };
+  get.dump = function dump () { return {}; };
+  get.back = function back () { return get; };
+
+  freeze_fields(get);
+  return get;
+})();
+
 function slice (array, start, end) {
   return arr_slice.call(array, start, end);
 }
@@ -37,13 +54,7 @@ function is_api (value) {
 
 function api (storage, deleted, previous) {
   deleted = deleted || {};
-
-  if (!previous) {
-    previous = function prev () { return null; };
-    previous.keys = function keys () { return []; };
-    previous.dump = function dump () { return {}; };
-    previous.back = function back () { return previous; };
-  }
+  previous = previous || dummy_api;
 
   get.patch = patch;
   get.rm = rm;
@@ -55,11 +66,7 @@ function api (storage, deleted, previous) {
   freeze(storage);
   freeze(deleted);
 
-  for (var name in get) {
-    freeze(get[name]);
-  }
-
-  freeze(get);
+  freeze_fields(get);
 
   return get;
 
