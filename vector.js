@@ -87,6 +87,7 @@ function store_config (options) {
       }
 
       node[last_key] = value;
+      Object.freeze(node);
 
       return api(root);
     }
