@@ -5,6 +5,7 @@ var numbers = function (bits) {
   var mask  = width - 1;
 
   return {
+    neutral: 0,
     divide: function divide_number (key, depth) {
       var parts = new Array(depth);
 
@@ -47,6 +48,7 @@ function store_config (options) {
   var copy = options.copy;
   var new_node = options.new_node;
   var min_depth = options.min_depth;
+  var neutral = options.neutral;
 
   return store;
 
@@ -70,7 +72,7 @@ function store_config (options) {
       for (var i = 0; i < levels; ++i) {
         node = root;
         root = new_node();
-        root[0] = node;
+        root[neutral] = node;
       }
 
       root.depth = depth;
