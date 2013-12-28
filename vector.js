@@ -25,25 +25,12 @@ var numbers = function (bits) {
     },
     copy: function copy_array (array) {
       return array ? array.concat([]) : new Array(width);
-    },
-    paritition: function paritition (input) {
-      var arrays = [];
-      arrays.depth = (input[0].depth || 1) + 1;
-
-      for (var i = 0; i < input.length; i += width) {
-        arrays.push(input.slice(i, i + width));
-      }
-
-      Object.freeze(arrays);
-
-      return arrays.length <= width ? arrays : paritition(arrays);
     }
   }
 };
 
 
 function store_config (options) {
-  var paritition = options.paritition;
   var divide = options.divide;
   var copy = options.copy;
   var new_node = options.new_node;
