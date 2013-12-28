@@ -51,6 +51,14 @@ function store_config (options) {
 
     return lookup;
 
+    function lookup (key) {
+      var key_parts = divide(key, data.depth);
+
+      return key_parts.reduce(function (node, key_part) {
+        return node && node[key_part];
+      }, data);
+    }
+
     function grow (depth) {
       var root = copy(data);
       var levels = depth - (data && data.depth || 1);
@@ -90,14 +98,6 @@ function store_config (options) {
       Object.freeze(node);
 
       return api(root);
-    }
-
-    function lookup (key) {
-      var key_parts = divide(key, data.depth);
-
-      return key_parts.reduce(function (node, key_part) {
-        return node && node[key_part];
-      }, data);
     }
   }
 }
