@@ -15,6 +15,9 @@ var strings = function (width) {
       }
       return parts;
     },
+    merge: function merge (pre, key) {
+      return pre + key;
+    },
     min_depth: min_depth,
     new_node: function new_object () {
       return {};
@@ -25,6 +28,18 @@ var strings = function (width) {
         result[prop] = object[prop];
       }
       return result;
+    },
+    iterate: function iterate (object, fn) {
+      for (var prop in object) {
+        fn(object[prop], prop, object);
+      }
+    },
+    keys: function keys (object) {
+      var keys = [];
+      for (var prop in object) {
+        keys.push(prop);
+      }
+      return keys;
     },
     reduce: function reduce_object (object, fn, init) {
       for (var prop in object) {
@@ -56,6 +71,9 @@ var numbers = function (bits) {
 
       return parts;
     },
+    merge: function merge (pre, key) {
+      return (pre << bits) + key;
+    },
     min_depth: function min_depth (key) {
       return Math.ceil(Math.log(key + 1) / Math.log(width));
     },
@@ -64,6 +82,12 @@ var numbers = function (bits) {
     },
     copy: function copy_array (array) {
       return array ? array.concat([]) : new Array(width);
+    },
+    keys: function keys (array) {
+      return array.map(function (_, k) { return k; });
+    },
+    iterate: function iterate (array, fn) {
+      array.forEach(fn);
     },
     reduce: function reduce_array (array, fn, init) {
       return array.reduce(fn, init);
@@ -80,6 +104,9 @@ function store_config (options) {
   var neutral = options.neutral;
   var reduce = options.reduce;
 
+  var iterate = options.iterate;
+  var merge = options.merge;
+
   return store;
 
   function store (input) {
@@ -94,6 +121,7 @@ function store_config (options) {
     lookup.data = data;
     lookup.set = set;
     lookup.depth = depth;
+    lookup.forEach = forEach;
 
     return lookup;
 
@@ -143,6 +171,23 @@ function store_config (options) {
 
       return api(root, new_depth);
     }
+
+    function forEach (fn) {
+      for_recur(data, neutral, 1, fn);
+    }
+
+    function for_recur (node, key_pre, level, fn) {
+      var invoke = level === depth;
+
+      iterate(node, function (child, key) {
+        var key_full = merge(key_pre, key);
+        if (invoke) {
+          fn(child, key_full, lookup);
+        } else {
+          for_recur(child, key_full, level + 1, fn);
+        }
+      });
+    }
   }
 }
 
@@ -179,7 +224,15 @@ console.log("d:");
 inspect(d);
 
 var hashtable = store_config(strings(3));
-var h = hashtable({asdfe: 123, qweruiop: 456, "": 890});
+var h = hashtable({asdfe: 123, qweruiop: 456}).set("z", 890);
 
 inspect(h);
 console.log(h("asdfe"), h("qweruiop"), h(""));
+
+d.forEach(function (val, key) {
+  console.log(key, " = ", val);
+});
+
+h.forEach(function (val, key) {
+  console.log(key, " = ", val);
+});
