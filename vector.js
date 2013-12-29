@@ -2,8 +2,8 @@
 
 var strings = function (width) {
   return {
-    neutral: "",
-    divide: function divide_string (key, depth) {
+    zero: "",
+    split_key: function split_key (key, depth) {
       var parts = new Array(depth);
       var padding = depth - min_depth(key);
       var i, k;
@@ -15,7 +15,7 @@ var strings = function (width) {
       }
       return parts;
     },
-    merge: function merge (pre, key) {
+    merge_key: function merge_key (pre, key) {
       return pre + key;
     },
     min_depth: min_depth,
@@ -46,8 +46,8 @@ var numbers = function (bits) {
   var mask  = width - 1;
 
   return {
-    neutral: 0,
-    divide: function divide_number (key, depth) {
+    zero: 0,
+    split_key: function split_key (key, depth) {
       var parts = new Array(depth);
 
       for (var shift = (depth - 1) * bits, i = 0;
@@ -58,13 +58,13 @@ var numbers = function (bits) {
 
       return parts;
     },
-    merge: function merge (pre, key) {
+    merge_key: function merge_key (pre, key) {
       return (pre << bits) + key;
     },
     min_depth: function min_depth (key) {
       return Math.ceil(Math.log(key + 1) / Math.log(width));
     },
-    new_node: function new_number_node () {
+    new_node: function new_node () {
       return new Array(width);
     },
     copy: function copy_array (array) {
@@ -78,14 +78,14 @@ var numbers = function (bits) {
 
 
 function store_config (options) {
-  var divide = options.divide;
+  var split_key = options.split_key;
   var copy = options.copy;
   var new_node = options.new_node;
   var min_depth = options.min_depth;
-  var neutral = options.neutral;
+  var zero = options.zero;
 
   var iterate = options.iterate;
-  var merge = options.merge;
+  var merge_key = options.merge_key;
 
   return store;
 
@@ -102,17 +102,21 @@ function store_config (options) {
   function api (data, depth) {
     depth = depth || 1;
 
-    lookup.data = data;
-    lookup.set = set;
-    lookup.depth = depth;
-    lookup.forEach = forEach;
-    lookup.reduce = reduce;
-    lookup.map = map;
+    get.data = data;
+    get.depth = depth;
 
-    return lookup;
+    get.set = set;
 
-    function lookup (key) {
-      var key_parts = divide(key, depth);
+    get.forEach = forEach;
+    get.reduce = reduce;
+    get.map = map;
+
+    Object.freeze(get);
+
+    return get;
+
+    function get (key) {
+      var key_parts = split_key(key, depth);
 
       return key_parts.reduce(function (node, key_part) {
         return node && node[key_part];
@@ -127,7 +131,7 @@ function store_config (options) {
       for (var i = 0; i < levels; ++i) {
         node = root;
         root = new_node();
-        root[neutral] = node;
+        root[zero] = node;
       }
 
       return root;
@@ -136,7 +140,7 @@ function store_config (options) {
     function set (key, value) {
       var new_depth = Math.max(min_depth(key), depth);
 
-      var key_parts = divide(key, new_depth);
+      var key_parts = split_key(key, new_depth);
 
       var last_key = key_parts.pop();
 
@@ -160,29 +164,29 @@ function store_config (options) {
 
     function map (fn) {
       return reduce(function (result, value, key) {
-        return result.set(key, fn(value, key, lookup));
+        return result.set(key, fn(value, key, get));
       }, api());
     }
 
     function reduce (fn, init) {
       var result = init;
       forEach(function (value, key) {
-        result = fn(result, value, key, lookup);
+        result = fn(result, value, key, get);
       });
       return result;
     }
 
     function forEach (fn) {
-      for_recur(data, neutral, 1, fn);
+      for_recur(data, zero, 1, fn);
     }
 
     function for_recur (node, key_pre, level, fn) {
       var invoke = level === depth;
 
       iterate(node, function (child, key) {
-        var key_full = merge(key_pre, key);
+        var key_full = merge_key(key_pre, key);
         if (invoke) {
-          fn(child, key_full, lookup);
+          fn(child, key_full, get);
         } else {
           for_recur(child, key_full, level + 1, fn);
         }
