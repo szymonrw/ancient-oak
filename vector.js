@@ -122,6 +122,8 @@ function store_config (options) {
     lookup.set = set;
     lookup.depth = depth;
     lookup.forEach = forEach;
+    lookup.reduce = reduce;
+    lookup.map = map;
 
     return lookup;
 
@@ -170,6 +172,20 @@ function store_config (options) {
       Object.freeze(node);
 
       return api(root, new_depth);
+    }
+
+    function map (fn) {
+      return reduce(function (result, value, key) {
+        return result.set(key, fn(value, key, lookup));
+      }, api());
+    }
+
+    function reduce (fn, init) {
+      var result = init;
+      forEach(function (value, key) {
+        result = fn(result, value, key, lookup);
+      });
+      return result;
     }
 
     function forEach (fn) {
@@ -222,11 +238,16 @@ console.log(d(123), d(70), d(1023));
 
 console.log("d:");
 inspect(d);
+inspect(d.map(function (val) { return val + "!" }));
 
 var hashtable = store_config(strings(3));
 var h = hashtable({asdfe: 123, qweruiop: 456}).set("z", 890);
 
 inspect(h);
+inspect(h.map(function (val) {
+  return val * 1000;
+}));
+
 console.log(h("asdfe"), h("qweruiop"), h(""));
 
 d.forEach(function (val, key) {
