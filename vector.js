@@ -1,5 +1,44 @@
 "use strict";
 
+var strings = function (width) {
+  return {
+    neutral: "",
+    divide: function divide_string (key, depth) {
+      var parts = new Array(depth);
+      var padding = depth - min_depth(key);
+      var i, k;
+      for (i = 0; i < padding; ++i) {
+        parts[i] = "";
+      }
+      for (k = 0; i < depth; ++i, ++k) {
+        parts[i] = key.substr(k * width, width);
+      }
+      return parts;
+    },
+    min_depth: min_depth,
+    new_node: function new_object () {
+      return {};
+    },
+    copy: function copy_object (object) {
+      var result = {};
+      for (var prop in object) {
+        result[prop] = object[prop];
+      }
+      return result;
+    },
+    reduce: function reduce_object (object, fn, init) {
+      for (var prop in object) {
+        init = fn(init, object[prop], prop);
+      }
+      return init;
+    }
+  };
+
+  function min_depth (key) {
+    return Math.ceil(key.length / width);
+  }
+}
+
 var numbers = function (bits) {
   var width = 1 << bits;
   var mask  = width - 1;
@@ -25,6 +64,9 @@ var numbers = function (bits) {
     },
     copy: function copy_array (array) {
       return array ? array.concat([]) : new Array(width);
+    },
+    reduce: function reduce_array (array, fn, init) {
+      return array.reduce(fn, init);
     }
   }
 };
@@ -36,11 +78,12 @@ function store_config (options) {
   var new_node = options.new_node;
   var min_depth = options.min_depth;
   var neutral = options.neutral;
+  var reduce = options.reduce;
 
   return store;
 
   function store (input) {
-    return input.reduce(function (array, value, key) {
+    return reduce(input, function (array, value, key) {
       return array.set(key, value);
     }, api());
   }
@@ -122,14 +165,20 @@ console.log(b(123), b(70), b(1023));
 console.log(c(123), c(70), c(1023));
 console.log(d(123), d(70), d(1023));
 
-console.log("a:");
-inspect(a.data);
+// console.log("a:");
+// inspect(a.data);
 
-console.log("b:");
-inspect(b.data);
+// console.log("b:");
+// inspect(b.data);
 
-console.log("c:");
-inspect(c.data);
+// console.log("c:");
+// inspect(c.data);
 
-console.log("d:");
-inspect(d.data);
+// console.log("d:");
+// inspect(d.data);
+
+var hashtable = store_config(strings(3));
+var h = hashtable({asdfe: 123, qweruiop: 456, "": 890});
+
+inspect(h.data);
+console.log(h("asdfe"), h("qweruiop"), h(""));
