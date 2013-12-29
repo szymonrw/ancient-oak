@@ -33,19 +33,6 @@ var strings = function (width) {
       for (var prop in object) {
         fn(object[prop], prop, object);
       }
-    },
-    keys: function keys (object) {
-      var keys = [];
-      for (var prop in object) {
-        keys.push(prop);
-      }
-      return keys;
-    },
-    reduce: function reduce_object (object, fn, init) {
-      for (var prop in object) {
-        init = fn(init, object[prop], prop);
-      }
-      return init;
     }
   };
 
@@ -83,14 +70,8 @@ var numbers = function (bits) {
     copy: function copy_array (array) {
       return array ? array.concat([]) : new Array(width);
     },
-    keys: function keys (array) {
-      return array.map(function (_, k) { return k; });
-    },
     iterate: function iterate (array, fn) {
       array.forEach(fn);
-    },
-    reduce: function reduce_array (array, fn, init) {
-      return array.reduce(fn, init);
     }
   }
 };
@@ -102,7 +83,6 @@ function store_config (options) {
   var new_node = options.new_node;
   var min_depth = options.min_depth;
   var neutral = options.neutral;
-  var reduce = options.reduce;
 
   var iterate = options.iterate;
   var merge = options.merge;
@@ -110,9 +90,13 @@ function store_config (options) {
   return store;
 
   function store (input) {
-    return reduce(input, function (array, value, key) {
-      return array.set(key, value);
-    }, api());
+    var result = api();
+
+    iterate(input, function (value, key) {
+      result = result.set(key, value);
+    });
+
+    return result;
   }
 
   function api (data, depth) {
