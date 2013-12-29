@@ -88,23 +88,26 @@ function store_config (options) {
     }, api());
   }
 
-  function api (data) {
+  function api (data, depth) {
+    depth = depth || 1;
+
     lookup.data = data;
     lookup.set = set;
+    lookup.depth = depth;
 
     return lookup;
 
     function lookup (key) {
-      var key_parts = divide(key, data.depth);
+      var key_parts = divide(key, depth);
 
       return key_parts.reduce(function (node, key_part) {
         return node && node[key_part];
       }, data);
     }
 
-    function grow (depth) {
+    function grow (dest_depth) {
       var root = copy(data);
-      var levels = depth - (data && data.depth || 1);
+      var levels = dest_depth - depth;
 
       var node;
       for (var i = 0; i < levels; ++i) {
@@ -113,19 +116,17 @@ function store_config (options) {
         root[neutral] = node;
       }
 
-      root.depth = depth;
-
       return root;
     }
 
     function set (key, value) {
-      var depth = Math.max(min_depth(key), data && data.depth || 1);
+      var new_depth = Math.max(min_depth(key), depth);
 
-      var key_parts = divide(key, depth);
+      var key_parts = divide(key, new_depth);
 
       var last_key = key_parts.pop();
 
-      var root = grow(depth);
+      var root = grow(new_depth);
 
       var i, current_key, parent, node = root;
 
@@ -140,7 +141,7 @@ function store_config (options) {
       node[last_key] = value;
       Object.freeze(node);
 
-      return api(root);
+      return api(root, new_depth);
     }
   }
 }
@@ -174,11 +175,11 @@ console.log(d(123), d(70), d(1023));
 // console.log("c:");
 // inspect(c.data);
 
-// console.log("d:");
-// inspect(d.data);
+console.log("d:");
+inspect(d);
 
 var hashtable = store_config(strings(3));
 var h = hashtable({asdfe: 123, qweruiop: 456, "": 890});
 
-inspect(h.data);
+inspect(h);
 console.log(h("asdfe"), h("qweruiop"), h(""));
