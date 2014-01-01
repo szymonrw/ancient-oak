@@ -79,13 +79,14 @@ var numbers = function (bits) {
 
 function store_config (options) {
   var split_key = options.split_key;
+  var merge_key = options.merge_key;
+
   var copy = options.copy;
   var new_node = options.new_node;
   var min_depth = options.min_depth;
   var zero = options.zero;
 
   var iterate = options.iterate;
-  var merge_key = options.merge_key;
 
   return store;
 
@@ -106,6 +107,7 @@ function store_config (options) {
     get.depth = depth;
 
     get.set = set;
+    get.rm = rm;
 
     get.forEach = forEach;
     get.reduce = reduce;
@@ -137,29 +139,104 @@ function store_config (options) {
       return root;
     }
 
+    function shrink (root, old_depth) {
+      var elements = 0;
+      iterate(root, function () {
+        ++elements;
+      });
+
+      return ((elements === 1 && old_depth > 1 && zero in root)
+              // We have only one element with neutral key and we can
+              // decrease the depth
+              ? shrink(root[zero], old_depth - 1)
+              : elements === 0
+              // We have no element, we can return empty collection
+              ? api()
+              // We have more than one element, we cannot decrease depth
+              : api(root, old_depth));
+    }
+
     function set (key, value) {
+      return modify(key, copy, set_value, set_child);
+
+      function set_value (node, key_part) {
+        node[key_part] = value;
+      }
+
+      function set_child (parent, key_part, node) {
+        parent[key_part] = node;
+      }
+    }
+
+    function rm (key) {
+      var key_depth = min_depth(key);
+
+      // The tree never stored keys that big, nothing to delete.
+      if (key_depth > depth) return get;
+
+      return modify(key, copy_only_existing, delete_key, set_child);
+
+      function copy_only_existing (node) {
+        return node ? copy(node) : null
+      }
+
+      function delete_key (node, key_part) {
+        if (node) delete node[key_part];
+      }
+
+      function set_child (parent, key_part, child) {
+        if (!parent) return;
+
+        if (is_empty(child)) {
+          delete parent[key_part];
+        } else {
+          parent[key_part] = child;
+        }
+      }
+    }
+
+    function is_empty (node) {
+      if (!node) return true;
+
+      var empty = true;
+      iterate(node, function () {
+        empty = false;
+      });
+      return empty;
+    }
+
+    function modify (key, descending_action, leaf_action, ascending_action) {
       var new_depth = Math.max(min_depth(key), depth);
-
       var key_parts = split_key(key, new_depth);
-
-      var last_key = key_parts.pop();
-
       var root = grow(new_depth);
 
-      var i, current_key, parent, node = root;
+      var length = new_depth - 1;
 
-      for (i = 0; i < key_parts.length; ++i) {
-        current_key = key_parts[i];
-        parent = node;
-        node = copy(node[current_key]);
-        parent[current_key] = node;
+      var path = new Array(length);
+      var i, parent;
+
+      var node = root;
+
+      // descending
+      for (i = 0; i < length; ++i)  {
+        path[i] = node;
+        node = descending_action(node[key_parts[i]]);
+      }
+
+      leaf_action(node, key_parts[i]);
+
+      //node[key_parts[i]] = value;
+      Object.freeze(node);
+
+      // ascending
+      for (i = length - 1; i >= 0; --i) {
+        parent = path[i];
+        ascending_action(parent, key_parts[i], node);
+        node = parent;
         Object.freeze(parent);
       }
 
-      node[last_key] = value;
-      Object.freeze(node);
-
-      return api(root, new_depth);
+      return shrink(root, new_depth);
     }
 
     function map (fn) {
@@ -207,9 +284,9 @@ var vector3 = store_config(numbers(3));
 var alphabet = ["a","b","c","d","e","f","g","h","i","j","k"];
 
 var a = vector2(alphabet);
-var b = a.set(123, "z");
-var c = b.set(70, "y");
-var d = c.set(1023, "x");
+var b = a.set(123, "y");
+var c = b.set(70, "x");
+var d = c.set(1023, "z");
 
 console.log(b(123), b(70), b(1023));
 console.log(c(123), c(70), c(1023));
@@ -245,3 +322,11 @@ d.forEach(function (val, key) {
 h.forEach(function (val, key) {
   console.log(key, " = ", val);
 });
+
+var u = vector2([1,2,3]);
+var u1 = u.set(100, "asdf").set(101, "qwer");
+var u2 = u1.rm(100).rm(101);
+
+inspect(u.data);
+inspect(u1.data);
+inspect(u2.data);
