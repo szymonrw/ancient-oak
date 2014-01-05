@@ -1,6 +1,6 @@
 "use strict";
 
-var array = require("./lib/types/array");
+var array = require("./lib/types/array")(4);
 
 function p (a) {
   console.log("--- length: ", a.size);
