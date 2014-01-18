@@ -6,7 +6,8 @@ Features!
 
 -   **Deep immutability:**
 
-    Makes the whole tree of data immutable, not only the top-level.
+    Makes the whole tree of data immutable, not only the top-level
+    structure.
 
 -   **Provides convenient interface to your data:**
 
@@ -59,9 +60,62 @@ of their expected behaviours.
    Sorted integer keys, size reported in `size` field, extra methods:
    `push`, `pop`, `last`.
 
-## API
+## Quick reminder
 
+Some types in JavaScipt (booleans, numbers and Strings) are already
+immutable and don't need any special wrapping.
 
+## Usage
+
+Ancient Oak exposes one function: the immutabler.
+
+The immutabler takes arbitrary data tree and returns its immutable
+version.
+
+    => I({a: 1, b: [{c: 2}, {d: 3}]})
+
+    <= { [Function: get]
+         set: [Function: modify],
+         update: [Function: modify],
+         patch: [Function: patch],
+         rm: [Function: rm],
+         forEach: [Function: forEach],
+         reduce: [Function: reduce],
+         map: [Function: map] }
+
+The returned function is a getter for this structure. Example:
+
+    => I({a: 1})("a")
+    <= 1
+
+For deeper trees, every node will have its own getter and similar
+interface, recursively. Example:
+
+    => I({a: {b: 1}})("a")
+    <= { [Function: get]
+         set, update, patch, … }
+
+To get a value at deeper level, you can just travel further:
+
+    => I({a: {b: 1}})("a")("b")
+    <= 1
+
+Note: All methods on the getter are independent of `this` value, so
+they can be safely passed around without loosing their context.
+
+### `.set(key, value)` (mutator)
+
+### `.update(key, value)` (mutator)
+
+### `.patch(key, value)` (mutator)
+
+### `.rm(key, value)` (mutator)
+
+### `.forEach(fn (value, key))` (iterator)
+
+### `.map(fn (value, key))` (iterator)
+
+### `.reduce(fn (accumulator, value, key), init)` (iterator)
 
 ## Why
 
@@ -78,7 +132,7 @@ options:
 
 4.  allow both sender and receiver to modify the object as they wish.
 
-Each one solution have some drawbacks:
+Each solution have some drawbacks:
 
 1.  CPU & memory inefficiency: a copy takes time to produce, and
     doubles memory requirements for the object.
