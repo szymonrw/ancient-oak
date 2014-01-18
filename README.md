@@ -1,98 +1,67 @@
-# Immu
+# Ancient Oak: The Immutable Tree
 
-Experimental implementation of immutable versioned data structures
-([MVCC](http://en.wikipedia.org/wiki/Multiversion_concurrency_control))
-for JavaScript.
+Ancient Oak is an immutable data *tries* library.
 
-Immu provides simple API for storing and modifying data structures
-(trees of objects). Each modification produces a new version storing
-only modified properties. This makes keeping many versions of the same
-data light weight. Old version is intact and any other users of it can
-use it as it was never changed.
+Features!
 
-## The `I` function and the API
+-   **Deep immutability:**
 
-*The API will change probably in a near future*
+    Makes the whole tree of data immutable, not only the top-level.
 
-Entry point of the immu library is the `I` function. `I` creates
-initial version of the data returning the API for accessing it. Any
-properties that have mutable values will get their own instances of
-the API, recursively.
+-   **Provides convenient interface to your data:**
 
-### getter
+    Getting, setting, deep-patching, iterating, mapping, reducing…
 
-    (name[, …])
+-   **Each modification produces a new version:**
 
-`I` returns a function that will return the value pointed by name. If
-the value is mutable, the returned value is another API object itself.
-Thus, any values on deeper levels can be accessed either via
+    The old version is intact and can be still used as if no
+    modification was made.
 
-    ("a")("b")("c")
+-   **Lightweight versioning:**
 
-or by using the short-hand:
+    New version is not a full copy, only the difference is stored.
 
-    ("a", "b", "c")
+-   Zero dependencies.
 
-### patch
+For storage Ancient Oak uses exactly the same techniques as Clojure's
+immutable data structures. […]
 
-    .patch(diff)
+The main difference between Ancient Oak and other JS immutable data
+libraries is that Ancient Oak will transform the whole input into
+immutable structures, recursively and without exception.
 
-Multi-level update. Patches object by overwriting supplied properties
-in `diff`. If a value for a property is an object, the value for that
-property will be patched recursively. Example:
+## Use cases
 
-    var a = I({a: 1, b: 2, c: {d: 3, e: 4}});
-    var b = a.patch({b: 5, c: {d: 6}});
-    // b is {a: 1, b: 5, c: {d: 6, e: 4}}
+There are two main use cases:
 
-Returns a new version of the data.
+1.  You create a data structure from scratch: you just create an empty
+    collection and start adding values.
 
-### rm
+2.  You convert received data as soon as you get a hold of it: for
+    example after an XHR request you convert the data just after you
+    receive it.
 
-    .rm(name[, …])
+Once you convert your data to immutable structures is safe to pass it
+around.
 
-Deletes value with a given name. If more than one name is passed in,
-it will reach deeply into the structure to delete a field on a path.
+## Types
 
-    var a = I({a: 1, b: {c: 2, d: 3}})
+Ancient Oak's types map 1:1 to JavaScript types. They inherit most
+of their expected behaviours.
 
-    var b = a.rm("b");
-    // b is {a: 1}
+-  **Hashes/Objects**
 
-    var c = a.rm("b", "c");
-    // c is {a: 1, b: {d: 3}}
+   As with regular objects in JavaScript, keys are not guarantied to
+   be sorted.
 
-Returns a new version of the data.
+-  **Arrays**
 
-### dump
+   Sorted integer keys, size reported in `size` field, extra methods:
+   `push`, `pop`, `last`.
 
-    .dump()
+## API
 
-Returns plain JavaScript object tree of the data.
 
-### keys
-
-    .keys()
-
-Returns an array containing all key names.
-
-### back (might get deprecated)
-
-    .back()
-
-Returns one version back. This method is a side effect of current
-implementation and will likely go away.
-
-### compat (might get deprecated)
-
-    .compat()
-
-"Flatten" the history. Current implementation preserves all history by
-default, even objects that have been overwritten in newer versions or
-marked as deleted. This prevents GC from swiping them. `compat` method
-will return a new version of the data that is not linked to any
-previous version, thus allowing GC to do it's job (as long as we null
-reference to the data we called `compat` on).
 
 ## Why
 
