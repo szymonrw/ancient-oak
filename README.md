@@ -105,17 +105,17 @@ they can be safely passed around without loosing their context.
 
 ### `.set(key, value)` (mutator)
 
-### `.update(key, value)` (mutator)
+### `.update(key, fn(old))` (mutator)
 
-### `.patch(key, value)` (mutator)
+### `.patch(diff)` (mutator)
 
 ### `.rm(key, value)` (mutator)
 
-### `.forEach(fn (value, key))` (iterator)
+### `.forEach(fn(value, key))` (iterator)
 
-### `.map(fn (value, key))` (iterator)
+### `.map(fn(value, key))` (iterator)
 
-### `.reduce(fn (accumulator, value, key), init)` (iterator)
+### `.reduce(fn(accumulator, value, key), init)` (iterator)
 
 ## Why
 
