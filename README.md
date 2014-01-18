@@ -1,6 +1,6 @@
 # Ancient Oak: The Immutable Tree
 
-Ancient Oak is an immutable data *tries* library.
+Ancient Oak is an immutable data *trees* library.
 
 Features!
 
