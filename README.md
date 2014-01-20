@@ -105,17 +105,52 @@ they can be safely passed around without loosing their context.
 
 ### `.set(key, value)` (mutator)
 
+Set's value for `key` to `value` and returns a new version of the
+tree.
+
 ### `.update(key, fn(old))` (mutator)
+
+Set's value for `key` to the return value of `fn(old)`. `old` is the
+old value for that key.
 
 ### `.patch(diff)` (mutator)
 
-### `.rm(key, value)` (mutator)
+Deep patching method. `diff` is a tree of values to be updated. For
+example:
+
+    => I({a: 1, b: {c: 2, d: 3}}).patch({b: {c: 4}, e: 5})
+    // The returned version is now {a: 1, b: {c: 4, d: 3}, e: 5}
+
+
+### `.rm(keys…)` (mutator)
+
+Deep delete method. The method will delete value at "address" pointed
+by series of keys.
+
+    => I({a: 1, b: {c: 2, d: 3}}).rm("b", "c")
+    // The returned version is now {a: 1, b: {d: 3}}
 
 ### `.forEach(fn(value, key))` (iterator)
 
+Invokes `fn` for each value. The order of keys depends on the type of
+the collection.
+
 ### `.map(fn(value, key))` (iterator)
 
+Returns a new version where every value is updated with the return
+value of `fn(value, key)`. Preserves type of the collection.
+
 ### `.reduce(fn(accumulator, value, key), init)` (iterator)
+
+Invokes `fn` for the first pair of `value` and `key` with
+`accumulator` being the value of `init`. For subsequent calls,
+`accumulator` takes the return value of the previous
+invokation. Returns the value returned by the last invokation of `fn`.
+
+### `.dump()` & `.json()`
+
+`dump` returns representation of the tree in plain JavaScript. `json`
+does the same but returns a JSON string instead.
 
 ## Why
 
