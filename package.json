@@ -1,0 +1,7 @@
+{
+  "name": "ancient-oak",
+  "version": "0.0.1",
+  "devDependencies": {
+    "browserify": "*"
+  }
+}

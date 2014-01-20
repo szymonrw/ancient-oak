@@ -1,98 +1,156 @@
-# Immu
+# Ancient Oak: The Immutable Tree
 
-Experimental implementation of immutable versioned data structures
-([MVCC](http://en.wikipedia.org/wiki/Multiversion_concurrency_control))
-for JavaScript.
+Ancient Oak is an immutable data *trees* library.
 
-Immu provides simple API for storing and modifying data structures
-(trees of objects). Each modification produces a new version storing
-only modified properties. This makes keeping many versions of the same
-data light weight. Old version is intact and any other users of it can
-use it as it was never changed.
+Features!
 
-## The `I` function and the API
+-   **Deep immutability:**
 
-*The API will change probably in a near future*
+    Makes the whole tree of data immutable, not only the top-level
+    structure.
 
-Entry point of the immu library is the `I` function. `I` creates
-initial version of the data returning the API for accessing it. Any
-properties that have mutable values will get their own instances of
-the API, recursively.
+-   **Provides convenient interface to your data:**
 
-### getter
+    Getting, setting, deep-patching, iterating, mapping, reducing…
 
-    (name[, …])
+-   **Each modification produces a new version:**
 
-`I` returns a function that will return the value pointed by name. If
-the value is mutable, the returned value is another API object itself.
-Thus, any values on deeper levels can be accessed either via
+    The old version is intact and can be still used as if no
+    modification was made.
 
-    ("a")("b")("c")
+-   **Lightweight versioning:**
 
-or by using the short-hand:
+    New version is not a full copy, only the difference is stored.
 
-    ("a", "b", "c")
+-   Zero dependencies.
 
-### patch
+For storage Ancient Oak uses exactly the same techniques as Clojure's
+immutable data structures. […]
 
-    .patch(diff)
+The main difference between Ancient Oak and other JS immutable data
+libraries is that Ancient Oak will transform the whole input into
+immutable structures, recursively and without exception.
 
-Multi-level update. Patches object by overwriting supplied properties
-in `diff`. If a value for a property is an object, the value for that
-property will be patched recursively. Example:
+## Use cases
 
-    var a = I({a: 1, b: 2, c: {d: 3, e: 4}});
-    var b = a.patch({b: 5, c: {d: 6}});
-    // b is {a: 1, b: 5, c: {d: 6, e: 4}}
+There are two main use cases:
 
-Returns a new version of the data.
+1.  You create a data structure from scratch: you just create an empty
+    collection and start adding values.
 
-### rm
+2.  You convert received data as soon as you get a hold of it: for
+    example after an XHR request you convert the data just after you
+    receive it.
 
-    .rm(name[, …])
+Once you convert your data to immutable structures is safe to pass it
+around.
 
-Deletes value with a given name. If more than one name is passed in,
-it will reach deeply into the structure to delete a field on a path.
+## Types
 
-    var a = I({a: 1, b: {c: 2, d: 3}})
+Ancient Oak's types map 1:1 to JavaScript types. They inherit most
+of their expected behaviours.
 
-    var b = a.rm("b");
-    // b is {a: 1}
+-  **Hashes/Objects**
 
-    var c = a.rm("b", "c");
-    // c is {a: 1, b: {d: 3}}
+   As with regular objects in JavaScript, keys are not guarantied to
+   be sorted.
 
-Returns a new version of the data.
+-  **Arrays**
 
-### dump
+   Sorted integer keys, size reported in `size` field, extra methods:
+   `push`, `pop`, `last`.
 
-    .dump()
+## Quick reminder
 
-Returns plain JavaScript object tree of the data.
+Some types in JavaScipt (booleans, numbers and Strings) are already
+immutable and don't need any special wrapping.
 
-### keys
+## Usage
 
-    .keys()
+Ancient Oak exposes one function: the immutabler.
 
-Returns an array containing all key names.
+The immutabler takes arbitrary data tree and returns its immutable
+version.
 
-### back (might get deprecated)
+    => I({a: 1, b: [{c: 2}, {d: 3}]})
 
-    .back()
+    <= { [Function: get]
+         set: [Function: modify],
+         update: [Function: modify],
+         patch: [Function: patch],
+         rm: [Function: rm],
+         forEach: [Function: forEach],
+         reduce: [Function: reduce],
+         map: [Function: map] }
 
-Returns one version back. This method is a side effect of current
-implementation and will likely go away.
+The returned function is a getter for this structure. Example:
 
-### compat (might get deprecated)
+    => I({a: 1})("a")
+    <= 1
 
-    .compat()
+For deeper trees, every node will have its own getter and similar
+interface, recursively. Example:
 
-"Flatten" the history. Current implementation preserves all history by
-default, even objects that have been overwritten in newer versions or
-marked as deleted. This prevents GC from swiping them. `compat` method
-will return a new version of the data that is not linked to any
-previous version, thus allowing GC to do it's job (as long as we null
-reference to the data we called `compat` on).
+    => I({a: {b: 1}})("a")
+    <= { [Function: get]
+         set, update, patch, … }
+
+To get a value at deeper level, you can just travel further:
+
+    => I({a: {b: 1}})("a")("b")
+    <= 1
+
+Note: All methods on the getter are independent of `this` value, so
+they can be safely passed around without loosing their context.
+
+### `.set(key, value)` (mutator)
+
+Set's value for `key` to `value` and returns a new version of the
+tree.
+
+### `.update(key, fn(old))` (mutator)
+
+Set's value for `key` to the return value of `fn(old)`. `old` is the
+old value for that key.
+
+### `.patch(diff)` (mutator)
+
+Deep patching method. `diff` is a tree of values to be updated. For
+example:
+
+    => I({a: 1, b: {c: 2, d: 3}}).patch({b: {c: 4}, e: 5})
+    // The returned version is now {a: 1, b: {c: 4, d: 3}, e: 5}
+
+
+### `.rm(keys…)` (mutator)
+
+Deep delete method. The method will delete value at "address" pointed
+by series of keys.
+
+    => I({a: 1, b: {c: 2, d: 3}}).rm("b", "c")
+    // The returned version is now {a: 1, b: {d: 3}}
+
+### `.forEach(fn(value, key))` (iterator)
+
+Invokes `fn` for each value. The order of keys depends on the type of
+the collection.
+
+### `.map(fn(value, key))` (iterator)
+
+Returns a new version where every value is updated with the return
+value of `fn(value, key)`. Preserves type of the collection.
+
+### `.reduce(fn(accumulator, value, key), init)` (iterator)
+
+Invokes `fn` for the first pair of `value` and `key` with
+`accumulator` being the value of `init`. For subsequent calls,
+`accumulator` takes the return value of the previous
+invokation. Returns the value returned by the last invokation of `fn`.
+
+### `.dump()` & `.json()`
+
+`dump` returns representation of the tree in plain JavaScript. `json`
+does the same but returns a JSON string instead.
 
 ## Why
 
@@ -109,7 +167,7 @@ options:
 
 4.  allow both sender and receiver to modify the object as they wish.
 
-Each one solution have some drawbacks:
+Each solution have some drawbacks:
 
 1.  CPU & memory inefficiency: a copy takes time to produce, and
     doubles memory requirements for the object.
