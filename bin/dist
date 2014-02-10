@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source bin/env
+
+mkdir -p "$DIST"
+
+browserify "$INDEX" --standalone I -o "$STANDALONE"
+uglifyjs --source-map "$MAP" "$STANDALONE" > "$MINIFIED"

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+source bin/env
+
+cat > "$DOC_INDEX" <<EOF
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0">
+<title>Ancient Oak</title>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,700italic|Source+Code+Pro:400,400italic&amp;subset=latin-ext,latin">
+<style>
+body {
+font-family: "Source Sans Pro", sans-serif;
+font-size: 18px;
+max-width: 600px;
+margin: 0 auto;
+}
+pre, code {
+font-family: "Source Code Pro", Consolas, monospace;
+}
+</style>
+</head>
+<body>
+<p><em>This page has Ancient Oak lib included. Feel free to open your browser developer tools and try it out! :-)</em></p>
+<p><a href="https://github.com/szywon/ancient-oak">Project page</a> | <a href="https://szywon.pl/ancient-oak">Docs</a></p>
+EOF
+
+marked README.md >> "$DOC_INDEX"
+
+echo "<script src=\"$STANDALONE\"></script>" >> "$DOC_INDEX"
+
+cat >> "$DOC_INDEX" <<EOF
+</body>
+</html>
+EOF

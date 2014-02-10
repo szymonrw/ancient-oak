@@ -1,7 +1,15 @@
 {
   "name": "ancient-oak",
   "version": "0.0.1",
+  "scripts": {
+    "dist": "bin/dist",
+    "docs": "bin/docs",
+    "test": "jasmine-node spec"
+  },
   "devDependencies": {
-    "browserify": "*"
+    "browserify": "3",
+    "jasmine-node": "1",
+    "marked": "*",
+    "uglify-js": "*"
   }
 }

@@ -1,0 +1,9 @@
+DIST="dist"
+NAME="$DIST/$npm_package_name-$npm_package_version"
+
+INDEX="lib/index.js"
+STANDALONE="$NAME.js"
+MINIFIED="$NAME.min.js"
+MAP="$NAME.map.json"
+
+DOC_INDEX="index.html"
