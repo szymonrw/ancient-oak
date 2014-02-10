@@ -205,11 +205,16 @@ function storage (options) {
               : api(root, old_depth, new_props));
     }
 
-    function patch (diff) {
-      var result = get;
-
-      for (var name in diff) {
-        result = modify_patch(name, diff[name]);
+    function patch (name, value) {
+      if (typeof name === "object") {
+        var diff = name;
+        var result = get;
+        for (name in diff) {
+          result = result.patch(name, diff[name]);
+        }
+        return result;
+      } else {
+        return modify_patch(name, value);
       }
 
       return result;
