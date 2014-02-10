@@ -5,4 +5,4 @@ source bin/env
 mkdir -p "$DIST"
 
 browserify "$INDEX" --standalone I -o "$STANDALONE"
-uglifyjs --source-map "$MAP" "$STANDALONE" > "$MINIFIED"
+uglifyjs -m -c --source-map "$MAP" "$STANDALONE" > "$MINIFIED"

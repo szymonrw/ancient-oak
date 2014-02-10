@@ -2,8 +2,8 @@
 
 source bin/env
 
-cat > "$DOC_INDEX" <<EOF
-<!doctype html>
+(cat <<EOF
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -23,15 +23,17 @@ font-family: "Source Code Pro", Consolas, monospace;
 </style>
 </head>
 <body>
+
 <p><em>This page has Ancient Oak lib included. Feel free to open your browser developer tools and try it out! :-)</em></p>
-<p><a href="https://github.com/szywon/ancient-oak">Project page</a> | <a href="https://szywon.pl/ancient-oak">Docs</a></p>
+
 EOF
-
-marked README.md >> "$DOC_INDEX"
-
-echo "<script src=\"$STANDALONE\"></script>" >> "$DOC_INDEX"
-
-cat >> "$DOC_INDEX" <<EOF
-</body>
-</html>
-EOF
+  echo "<ul>"
+  echo "<li><a href=\"https://github.com/szywon/ancient-oak\">Project page</a></li>"
+  for f in "$STANDALONE" "$MINIFIED" "$MAP"; do
+    echo "<li><a href=\"$f\">$f</a></li>"
+  done
+  echo "</ul>"
+  marked README.md
+  echo "<script src=\"$STANDALONE\"></script>"
+  echo "</body></html>"
+) > "$DOC_INDEX"
