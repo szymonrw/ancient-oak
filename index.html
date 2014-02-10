@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0">
+<title>Ancient Oak</title>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,700italic|Source+Code+Pro:400,400italic&amp;subset=latin-ext,latin">
+<style>
+body {
+font-family: "Source Sans Pro", sans-serif;
+font-size: 18px;
+max-width: 600px;
+margin: 0 auto;
+}
+pre, code {
+font-family: "Source Code Pro", Consolas, monospace;
+}
+</style>
+</head>
+<body>
+
+<p><em>This page has Ancient Oak lib included. Feel free to open your browser developer tools and try it out! :-)</em></p>
+
+<ul>
+<li><a href="https://github.com/szywon/ancient-oak">Project page</a></li>
+<li><a href="dist/ancient-oak-0.0.1.js">dist/ancient-oak-0.0.1.js</a></li>
+<li><a href="dist/ancient-oak-0.0.1.min.js">dist/ancient-oak-0.0.1.min.js</a></li>
+<li><a href="dist/ancient-oak-0.0.1.map.json">dist/ancient-oak-0.0.1.map.json</a></li>
+</ul>
+<h1 id="ancient-oak-the-immutable-tree">Ancient Oak: The Immutable Tree</h1>
+<p>Ancient Oak is an immutable data <em>trees</em> library.</p>
+<p>Features!</p>
+<ul>
+<li><p><strong>Deep immutability:</strong></p>
+<p>Makes the whole tree of data immutable, not only the top-level
+structure.</p>
+</li>
+<li><p><strong>Provides convenient interface to your data:</strong></p>
+<p>Getting, setting, deep-patching, iterating, mapping, reducing…</p>
+</li>
+<li><p><strong>Each modification produces a new version:</strong></p>
+<p>The old version is intact and can be still used as if no
+modification was made.</p>
+</li>
+<li><p><strong>Lightweight versioning:</strong></p>
+<p>New version is not a full copy, only the difference is stored.</p>
+</li>
+<li><p>Zero dependencies.</p>
+</li>
+</ul>
+<p>For storage Ancient Oak uses exactly the same techniques as Clojure&#39;s
+immutable data structures. […]</p>
+<p>The main difference between Ancient Oak and other JS immutable data
+libraries is that Ancient Oak will transform the whole input into
+immutable structures, recursively and without exception.</p>
+<h2 id="use-cases">Use cases</h2>
+<p>There are two main use cases:</p>
+<ol>
+<li><p>You create a data structure from scratch: you just create an empty
+collection and start adding values.</p>
+</li>
+<li><p>You convert received data as soon as you get a hold of it: for
+example after an XHR request you convert the data just after you
+receive it.</p>
+</li>
+</ol>
+<p>Once you convert your data to immutable structures is safe to pass it
+around.</p>
+<h2 id="types">Types</h2>
+<p>Ancient Oak&#39;s types map 1:1 to JavaScript types. They inherit most
+of their expected behaviours.</p>
+<ul>
+<li><p><strong>Hashes/Objects</strong></p>
+<p>As with regular objects in JavaScript, keys are not guarantied to
+be sorted.</p>
+</li>
+<li><p><strong>Arrays</strong></p>
+<p>Sorted integer keys, size reported in <code>size</code> field, extra methods:
+<code>push</code>, <code>pop</code>, <code>last</code>.</p>
+</li>
+</ul>
+<h2 id="quick-reminder">Quick reminder</h2>
+<p>Some types in JavaScipt (booleans, numbers and Strings) are already
+immutable and don&#39;t need any special wrapping.</p>
+<h2 id="usage">Usage</h2>
+<p>Ancient Oak exposes one function: the immutabler.</p>
+<p>The immutabler takes arbitrary data tree and returns its immutable
+version.</p>
+<pre><code>=&gt; I({a: 1, b: [{c: 2}, {d: 3}]})
+
+&lt;= { [Function: get]
+     set: [Function: modify],
+     update: [Function: modify],
+     patch: [Function: patch],
+     rm: [Function: rm],
+     forEach: [Function: forEach],
+     reduce: [Function: reduce],
+     map: [Function: map] }
+</code></pre><p>The returned function is a getter for this structure. Example:</p>
+<pre><code>=&gt; I({a: 1})(&quot;a&quot;)
+&lt;= 1
+</code></pre><p>For deeper trees, every node will have its own getter and similar
+interface, recursively. Example:</p>
+<pre><code>=&gt; I({a: {b: 1}})(&quot;a&quot;)
+&lt;= { [Function: get]
+     set, update, patch, … }
+</code></pre><p>To get a value at deeper level, you can just travel further:</p>
+<pre><code>=&gt; I({a: {b: 1}})(&quot;a&quot;)(&quot;b&quot;)
+&lt;= 1
+</code></pre><p>Note: All methods on the getter are independent of <code>this</code> value, so
+they can be safely passed around without loosing their context.</p>
+<h3 id="-set-key-value-mutator-"><code>.set(key, value)</code> (mutator)</h3>
+<p>Set&#39;s value for <code>key</code> to <code>value</code> and returns a new version of the
+tree.</p>
+<h3 id="-update-key-fn-old-mutator-"><code>.update(key, fn(old))</code> (mutator)</h3>
+<p>Set&#39;s value for <code>key</code> to the return value of <code>fn(old)</code>. <code>old</code> is the
+old value for that key.</p>
+<h3 id="-patch-diff-mutator-"><code>.patch(diff)</code> (mutator)</h3>
+<p>Deep patching method. <code>diff</code> is a tree of values to be updated. For
+example:</p>
+<pre><code>=&gt; I({a: 1, b: {c: 2, d: 3}}).patch({b: {c: 4}, e: 5})
+// The returned version is now {a: 1, b: {c: 4, d: 3}, e: 5}
+</code></pre><h3 id="-rm-keys-mutator-"><code>.rm(keys…)</code> (mutator)</h3>
+<p>Deep delete method. The method will delete value at &quot;address&quot; pointed
+by series of keys.</p>
+<pre><code>=&gt; I({a: 1, b: {c: 2, d: 3}}).rm(&quot;b&quot;, &quot;c&quot;)
+// The returned version is now {a: 1, b: {d: 3}}
+</code></pre><h3 id="-foreach-fn-value-key-iterator-"><code>.forEach(fn(value, key))</code> (iterator)</h3>
+<p>Invokes <code>fn</code> for each value. The order of keys depends on the type of
+the collection.</p>
+<h3 id="-map-fn-value-key-iterator-"><code>.map(fn(value, key))</code> (iterator)</h3>
+<p>Returns a new version where every value is updated with the return
+value of <code>fn(value, key)</code>. Preserves type of the collection.</p>
+<h3 id="-reduce-fn-accumulator-value-key-init-iterator-"><code>.reduce(fn(accumulator, value, key), init)</code> (iterator)</h3>
+<p>Invokes <code>fn</code> for the first pair of <code>value</code> and <code>key</code> with
+<code>accumulator</code> being the value of <code>init</code>. For subsequent calls,
+<code>accumulator</code> takes the return value of the previous
+invokation. Returns the value returned by the last invokation of <code>fn</code>.</p>
+<h3 id="-dump-json-"><code>.dump()</code> &amp; <code>.json()</code></h3>
+<p><code>dump</code> returns representation of the tree in plain JavaScript. <code>json</code>
+does the same but returns a JSON string instead.</p>
+<h2 id="why">Why</h2>
+<p>The problem: When we send data from one module to another we have four
+options:</p>
+<ol>
+<li><p>send a new deep copy of the object</p>
+</li>
+<li><p><code>freeze</code> the object before sending, preventing it from being
+modified any further by anyone</p>
+</li>
+<li><p>assume that from now on the objects belong to the other module and
+we restrain current scope from making any further modifications</p>
+</li>
+<li><p>allow both sender and receiver to modify the object as they wish.</p>
+</li>
+</ol>
+<p>Each solution have some drawbacks:</p>
+<ol>
+<li><p>CPU &amp; memory inefficiency: a copy takes time to produce, and
+doubles memory requirements for the object.</p>
+</li>
+<li><p>requires to create a copy to &quot;modify&quot; the object.</p>
+</li>
+<li><p>requires to enforce a practice, that might be difficult to make
+everyone on the team to remember it at all times.</p>
+</li>
+<li><p>this is makes it even more difficult than 3. making both receiver
+and sender vulnerable to unsolicited changes to the object.</p>
+</li>
+</ol>
+<p><em>…to be continued…</em> ;)</p>
+
+<script src="dist/ancient-oak-0.0.1.js"></script>
+</body></html>
