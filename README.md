@@ -31,6 +31,16 @@ The main difference between Ancient Oak and other JS immutable data
 libraries is that Ancient Oak will transform the whole input into
 immutable structures, recursively and without exception.
 
+## Installation and Usage
+
+```bash
+npm install
+bin/dist # generates dist/-.js, dist/-.map.json, dist/-.min.js
+bin/docs # generates index.html
+```
+
+Open index.html in a browser. Open the browser console. Play!
+
 ## Use cases
 
 There are two main use cases:
