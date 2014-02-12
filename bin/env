@@ -7,3 +7,4 @@ MINIFIED="$NAME.min.js"
 MAP="$NAME.map.json"
 
 DOC_INDEX="index.html"
+MARKED="node_modules/marked/bin/marked"

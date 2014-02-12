@@ -33,7 +33,7 @@ EOF
     echo "<li><a href=\"$f\">$f</a></li>"
   done
   echo "</ul>"
-  marked README.md
+  $MARKED README.md
   echo "<script src=\"$STANDALONE\"></script>"
   echo "</body></html>"
 ) > "$DOC_INDEX"
