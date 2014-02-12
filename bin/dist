@@ -4,5 +4,5 @@ source bin/env
 
 mkdir -p "$DIST"
 
-browserify "$INDEX" --standalone I -o "$STANDALONE"
-uglifyjs -m -c --source-map "$MAP" "$STANDALONE" > "$MINIFIED"
+node_modules/browserify/bin/cmd.js "$INDEX" --standalone I -o "$STANDALONE"
+node_modules/uglify-js/bin/uglifyjs -m -c --source-map "$MAP" "$STANDALONE" > "$MINIFIED"
