@@ -31,6 +31,29 @@ The main difference between Ancient Oak and other JS immutable data
 libraries is that Ancient Oak will transform the whole input into
 immutable structures, recursively and without exception.
 
+## Usage
+
+The easiest way to use Ancient Oak in your project is to grab the
+standalone version from [the project
+page](http://szywon.pl/ancient-oak). The library is included on that
+page so you can try it out in your browser's devtools.
+
+If you're using [browserify](http://browserify.org/), you can use npm
+to bring it in your project:
+
+    npm install ancient-oak
+
+## During development
+
+To generate standalone versions of the library and the docs you can
+run those two commands.
+
+    npm run dist
+    npm run docs
+
+Scripts in `bin/` folder are meant to be run with `npm run` because
+they depend on the environment `npm` is setting for them.
+
 ## Use cases
 
 There are two main use cases:

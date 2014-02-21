@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+// Generate bower's config from package.json
+
+var fs = require("fs");
+
+console.log(JSON.stringify(config(), null, 2));
+
+function config () {
+  var pkg = require("../package");
+
+  return {
+    name: pkg.name,
+    version: pkg.version,
+    main: process.env.STANDALONE,
+    ignore: ["lib", "spec"]
+  };
+}
