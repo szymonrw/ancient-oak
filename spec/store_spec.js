@@ -1,4 +1,4 @@
-// Guarantee that the we get back exactly what we gave
+"use strict";
 
 var store = require("../lib");
 
