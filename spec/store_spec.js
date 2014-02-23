@@ -15,6 +15,10 @@ describe("store", function () {
     it(".dump() returns identical array", function () {
       expect(store([1, 2]).dump()).toEqual([1, 2]);
     });
+
+    it("has same size as the array's length", function () {
+      expect(store([1, 2]).size).toEqual(2);
+    });
   });
 
   describe("given an empty object", function () {
