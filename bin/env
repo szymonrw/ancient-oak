@@ -1,4 +1,4 @@
-export DIST="dist"
+export DIST="versions"
 export NAME="$DIST/$npm_package_name-$npm_package_version"
 
 export INDEX="lib/index.js"
