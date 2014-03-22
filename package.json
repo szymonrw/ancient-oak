@@ -4,7 +4,7 @@
   "scripts": {
     "dist": "bin/dist",
     "docs": "bin/docs",
-    "bower-release": "bin/docs && bin/dist && bin/bower-release",
+    "release": "bin/release",
     "test": "jasmine-node spec"
   },
   "author": "Szymon Witamborski <szywon@szywon.pl>",

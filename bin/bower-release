@@ -1,6 +1,0 @@
-#!/bin/bash
-
-git add dist/*
-git add bower.json index.html
-git commit -m "Build: $npm_package_version"
-git tag -f "$npm_package_version"

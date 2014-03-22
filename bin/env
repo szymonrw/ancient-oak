@@ -1,3 +1,10 @@
+set -e
+
+if [ -z "$npm_package_name" ]; then
+  echo "Needs to be run from npm run" >&2
+  exit 1
+fi
+
 export DIST="versions"
 export NAME="$DIST/$npm_package_name-$npm_package_version"
 
@@ -5,5 +12,8 @@ export INDEX="lib/index.js"
 export STANDALONE="$NAME.js"
 export MINIFIED="$NAME.min.js"
 export MAP="$NAME.map.json"
+
+export MAIN="$npm_package_name.js"
+export MAIN_MINIFIED="$npm_package_name.min.js"
 
 export DOC_INDEX="index.html"
