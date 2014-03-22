@@ -1,9 +1,12 @@
 {
   "name": "ancient-oak",
-  "version": "0.0.3",
-  "main": "dist/ancient-oak-0.0.3.js",
+  "version": "0.0.4",
+  "main": "ancient-oak.js",
   "ignore": [
     "lib",
-    "spec"
+    "spec",
+    "bin",
+    "versions",
+    "index.html"
   ]
 }

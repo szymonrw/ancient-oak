@@ -6,4 +6,3 @@ mkdir -p "$DIST"
 
 browserify "$INDEX" --standalone I -o "$STANDALONE"
 uglifyjs -m -c --source-map "$MAP" "$STANDALONE" > "$MINIFIED"
-bin/bower-config > bower.json
