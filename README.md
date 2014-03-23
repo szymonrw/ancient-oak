@@ -25,7 +25,7 @@ Features!
 -   Zero dependencies.
 
 For storage Ancient Oak uses exactly the same techniques as Clojure's
-immutable data structures. […]
+immutable data structures. (see [Resources](#resources))
 
 The main difference between Ancient Oak and other JS immutable data
 libraries is that Ancient Oak will transform the whole input into
@@ -33,17 +33,18 @@ immutable structures, recursively and without exception.
 
 ## Usage
 
-The easiest way to use Ancient Oak in your project is to grab the
-standalone version from [the project
-page](http://szywon.pl/ancient-oak). The library is included on that
-page so you can try it out in your browser's devtools.
+There are three ways of using ancient-oak:
 
-If you're using [browserify](http://browserify.org/), you can use npm
-to bring it in your project:
+- `npm install ancient-oak` for node and browserify projects
+- `bower install ancient-oak` for bower users
+- grab the lib file from http://szywon.pl/ancient-oak
 
-    npm install ancient-oak
+## Resources
 
-## During development
+- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [szywon](http://szywon.pl), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com))
+- talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com))
+- article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
+
 ## Included scripts
 
 To generate standalone versions of the library and the docs you can
