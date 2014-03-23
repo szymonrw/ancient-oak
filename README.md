@@ -44,6 +44,7 @@ to bring it in your project:
     npm install ancient-oak
 
 ## During development
+## Included scripts
 
 To generate standalone versions of the library and the docs you can
 run those two commands.
@@ -51,8 +52,8 @@ run those two commands.
     npm run dist
     npm run docs
 
-Scripts in `bin/` folder are meant to be run with `npm run` because
-they depend on the environment `npm` is setting for them.
+Scripts in `scripts/` folder are meant to be run with `npm run` because
+they depend on the environment npm is setting for them.
 
 ## Use cases
 

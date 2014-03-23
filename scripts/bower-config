@@ -13,6 +13,6 @@ function config () {
     name: pkg.name,
     version: pkg.version,
     main: process.env.MAIN,
-    ignore: ["lib", "spec", "bin", "versions", "index.html"]
+    ignore: ["lib", "spec", "scripts", "versions", "index.html"]
   };
 }

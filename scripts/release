@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source bin/env
+source scripts/env
 
 if [ "$(git diff)" ]; then
   echo "You need to make all the commits before you release" >&2
@@ -10,9 +10,9 @@ fi
 git checkout gh-pages
 git merge master --no-commit
 
-bin/docs
-bin/dist
-bin/bower-config > bower.json
+scripts/docs
+scripts/dist
+scripts/bower-config > bower.json
 
 cp "$STANDALONE" "$MAIN"
 cp "$MINIFIED" "$MAIN_MINIFIED"
