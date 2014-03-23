@@ -1,10 +1,10 @@
 {
   "name": "ancient-oak",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
-    "dist": "bin/dist",
-    "docs": "bin/docs",
-    "release": "bin/release",
+    "dist": "scripts/dist",
+    "docs": "scripts/docs",
+    "release": "scripts/release",
     "test": "jasmine-node spec"
   },
   "author": "Szymon Witamborski <szywon@szywon.pl>",

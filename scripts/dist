@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source bin/env
+source scripts/env
 
 mkdir -p "$DIST"
 

@@ -11,6 +11,7 @@ font-family: "Source Sans Pro", sans-serif;
 font-size: 18px;
 max-width: 600px;
 margin: 0 auto;
+padding: 0 16px;
 }
 pre, code {
 font-family: "Source Code Pro", Consolas, monospace;
@@ -23,9 +24,9 @@ font-family: "Source Code Pro", Consolas, monospace;
 
 <ul>
 <li><a href="https://github.com/szywon/ancient-oak">Project page</a></li>
-<li><a href="versions/ancient-oak-0.0.5.js">versions/ancient-oak-0.0.5.js</a></li>
-<li><a href="versions/ancient-oak-0.0.5.min.js">versions/ancient-oak-0.0.5.min.js</a></li>
-<li><a href="versions/ancient-oak-0.0.5.map.json">versions/ancient-oak-0.0.5.map.json</a></li>
+<li><a href="versions/ancient-oak-0.0.6.js">versions/ancient-oak-0.0.6.js</a></li>
+<li><a href="versions/ancient-oak-0.0.6.min.js">versions/ancient-oak-0.0.6.min.js</a></li>
+<li><a href="versions/ancient-oak-0.0.6.map.json">versions/ancient-oak-0.0.6.map.json</a></li>
 </ul>
 <h1 id="ancient-oak-the-immutable-tree">Ancient Oak: The Immutable Tree</h1>
 <p>Ancient Oak is an immutable data <em>trees</em> library.</p>
@@ -49,25 +50,30 @@ modification was made.</p>
 </li>
 </ul>
 <p>For storage Ancient Oak uses exactly the same techniques as Clojure&#39;s
-immutable data structures. […]</p>
+immutable data structures. (see <a href="#resources">Resources</a>)</p>
 <p>The main difference between Ancient Oak and other JS immutable data
 libraries is that Ancient Oak will transform the whole input into
 immutable structures, recursively and without exception.</p>
 <h2 id="usage">Usage</h2>
-<p>The easiest way to use Ancient Oak in your project is to grab the
-standalone version from <a href="http://szywon.pl/ancient-oak">the project
-page</a>. The library is included on that
-page so you can try it out in your browser&#39;s devtools.</p>
-<p>If you&#39;re using <a href="http://browserify.org/">browserify</a>, you can use npm
-to bring it in your project:</p>
-<pre><code>npm install ancient-oak
-</code></pre><h2 id="during-development">During development</h2>
+<p>There are three ways of using ancient-oak:</p>
+<ul>
+<li><code>npm install ancient-oak</code> for node and browserify projects</li>
+<li><code>bower install ancient-oak</code> for bower users</li>
+<li>grab the lib file from <a href="http://szywon.pl/ancient-oak">http://szywon.pl/ancient-oak</a></li>
+</ul>
+<h2 id="resources">Resources</h2>
+<ul>
+<li>talk: <a href="http://vimeo.com/86694423">Immutable Data Trees in JavaScript</a> by <a href="http://szywon.pl">szywon</a>, (introduction, quite technical, February 2014 at <a href="http://emberlondon.com">Ember London</a>)</li>
+<li>talk: <a href="http://vimeo.com/89089876">Using Persistent Data Structures with Ember.js</a> by <a href="http://jgwhite.co.uk">Jamie White</a> (March 2014 at <a href="http://emberlondon.com">Ember London</a>)</li>
+<li>article: <a href="http://hypirion.com/musings/understanding-persistent-vector-pt-1">Understanding Clojure’s Persistent Vectors</a> by Jean Niklas L’orange is a very good write-up on how those data structures work internally</li>
+</ul>
+<h2 id="included-scripts">Included scripts</h2>
 <p>To generate standalone versions of the library and the docs you can
 run those two commands.</p>
 <pre><code>npm run dist
 npm run docs
-</code></pre><p>Scripts in <code>bin/</code> folder are meant to be run with <code>npm run</code> because
-they depend on the environment <code>npm</code> is setting for them.</p>
+</code></pre><p>Scripts in <code>scripts/</code> folder are meant to be run with <code>npm run</code> because
+they depend on the environment npm is setting for them.</p>
 <h2 id="use-cases">Use cases</h2>
 <p>There are two main use cases:</p>
 <ol>
@@ -185,5 +191,5 @@ and sender vulnerable to unsolicited changes to the object.</p>
 </ol>
 <p><em>…to be continued…</em> ;)</p>
 
-<script src="versions/ancient-oak-0.0.5.js"></script>
+<script src="versions/ancient-oak-0.0.6.js"></script>
 </body></html>

@@ -1,11 +1,11 @@
 {
   "name": "ancient-oak",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "ancient-oak.js",
   "ignore": [
     "lib",
     "spec",
-    "bin",
+    "scripts",
     "versions",
     "index.html"
   ]

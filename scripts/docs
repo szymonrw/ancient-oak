@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source bin/env
+source scripts/env
 
 (cat <<EOF
 <!DOCTYPE html>
@@ -16,6 +16,7 @@ font-family: "Source Sans Pro", sans-serif;
 font-size: 18px;
 max-width: 600px;
 margin: 0 auto;
+padding: 0 16px;
 }
 pre, code {
 font-family: "Source Code Pro", Consolas, monospace;
