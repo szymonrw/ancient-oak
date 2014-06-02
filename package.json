@@ -1,6 +1,6 @@
 {
   "name": "ancient-oak",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "scripts": {
     "dist": "scripts/dist",
     "docs": "scripts/docs",
@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/szywon/ancient-oak.git"
+    "url": "https://github.com/brainshave/ancient-oak.git"
   },
   "bugs": {
-    "url": "https://github.com/szywon/ancient-oak/issues"
+    "url": "https://github.com/brainshave/ancient-oak/issues"
   },
   "main": "./lib/index",
   "devDependencies": {
