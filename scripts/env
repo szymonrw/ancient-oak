@@ -12,8 +12,3 @@ export INDEX="lib/index.js"
 export STANDALONE="$NAME.js"
 export MINIFIED="$NAME.min.js"
 export MAP="$NAME.map.json"
-
-export MAIN="$npm_package_name.js"
-export MAIN_MINIFIED="$npm_package_name.min.js"
-
-export DOC_INDEX="index.html"

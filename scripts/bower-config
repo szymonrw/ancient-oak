@@ -12,7 +12,7 @@ function config () {
   return {
     name: pkg.name,
     version: pkg.version,
-    main: process.env.MAIN,
-    ignore: ["lib", "spec", "scripts", "versions", "index.html"]
+    main: process.env.STANDALONE,
+    ignore: ["spec", "scripts"]
   };
 }
