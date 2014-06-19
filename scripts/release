@@ -7,6 +7,8 @@ if [ "$(git diff)" ]; then
   exit 1
 fi
 
+git rm -r "$DIST"
+
 scripts/dist
 scripts/bower-config > bower.json
 
