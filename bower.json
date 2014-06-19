@@ -1,0 +1,12 @@
+{
+  "name": "ancient-oak",
+  "version": "0.1.0",
+  "main": "ancient-oak.js",
+  "ignore": [
+    "lib",
+    "spec",
+    "scripts",
+    "versions",
+    "index.html"
+  ]
+}
