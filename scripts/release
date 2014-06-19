@@ -10,9 +10,6 @@ fi
 scripts/dist
 scripts/bower-config > bower.json
 
-cp "$STANDALONE" "$MAIN"
-cp "$MINIFIED" "$MAIN_MINIFIED"
-
 git add .
 git commit -m "Build: $npm_package_version"
 git tag -f "$npm_package_version"
