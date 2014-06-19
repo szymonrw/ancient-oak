@@ -4,5 +4,7 @@ source scripts/env
 
 mkdir -p "$DIST"
 
+rm -f "$DIST"/*
+
 browserify "$INDEX" --standalone I -o "$STANDALONE"
 uglifyjs -m -c --source-map "$MAP" "$STANDALONE" > "$MINIFIED"

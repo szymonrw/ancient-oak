@@ -1,13 +1,13 @@
 {
   "name": "ancient-oak",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "scripts": {
     "dist": "scripts/dist",
     "docs": "scripts/docs",
     "release": "scripts/release",
     "test": "jasmine-node spec"
   },
-  "author": "Szymon Witamborski <szywon@szywon.pl>",
+  "author": "Szymon Witamborski <simon@brainshave.com>",
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -22,7 +22,6 @@
   "devDependencies": {
     "browserify": "3",
     "jasmine-node": "1",
-    "marked": "*",
     "uglify-js": "*"
   }
 }

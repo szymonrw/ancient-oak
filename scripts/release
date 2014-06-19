@@ -7,10 +7,6 @@ if [ "$(git diff)" ]; then
   exit 1
 fi
 
-git checkout gh-pages
-git merge master --no-commit
-
-scripts/docs
 scripts/dist
 scripts/bower-config > bower.json
 
@@ -20,9 +16,7 @@ cp "$MINIFIED" "$MAIN_MINIFIED"
 git add .
 git commit -m "Build: $npm_package_version"
 git tag -f "$npm_package_version"
-git push origin gh-pages
 
-git checkout master
 git push origin master
 git push origin --tags
 npm publish
