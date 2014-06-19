@@ -41,8 +41,8 @@ There are three ways of using ancient-oak:
 
 ## Resources
 
-- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [szywon](http://szywon.pl), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com))
-- talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com))
+- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [szywon](http://szywon.pl), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://szywon.pl/talks/immutable-data-trees))
+- talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com), [example project](https://github.com/jgwhite/ember-ancient-oak))
 - article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
 
 ## Included scripts
