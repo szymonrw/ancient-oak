@@ -73,6 +73,65 @@ describe("storing dates, ", function () {
     });
   });
 
+  describe("allows creating new versions", function () {
+    var specs = {
+      date: "setDate",
+      Date: "setDate",
+      fullYear: "setFullYear",
+      FullYear: "setFullYear",
+      full_year: "setFullYear",
+      hours: "setHours",
+      Hours: "setHours",
+      milliseconds: "setMilliseconds",
+      Milliseconds: "setMilliseconds",
+      minutes: "setMinutes",
+      Minutes: "setMinutes",
+      month: "setMonth",
+      Month: "setMonth",
+      seconds: "setSeconds",
+      Seconds: "setSeconds",
+      time: "setTime",
+      Time: "setTime",
+      utcDate: "setUTCDate",
+      UTCDate: "setUTCDate",
+      utc_date: "setUTCDate",
+      utcFullYear: "setUTCFullYear",
+      UTCFullYear: "setUTCFullYear",
+      utc_full_year: "setUTCFullYear",
+      utcHours: "setUTCHours",
+      UTCHours: "setUTCHours",
+      utc_hours: "setUTCHours",
+      utcMilliseconds: "setUTCMilliseconds",
+      UTCMilliseconds: "setUTCMilliseconds",
+      utc_milliseconds: "setUTCMilliseconds",
+      utcMinutes: "setUTCMinutes",
+      UTCMinutes: "setUTCMinutes",
+      utc_minutes: "setUTCMinutes",
+      utcMonth: "setUTCMonth",
+      UTCMonth: "setUTCMonth",
+      utc_month: "setUTCMonth",
+      utcSeconds: "setUTCSeconds",
+      UTCSeconds: "setUTCSeconds",
+      utc_seconds: "setUTCSeconds"
+    };
+
+    store(specs).forEach(function (method, field) {
+      var value = 6;
+      it(field, function () {
+        var date = new Date(0);
+        date[method](value);
+        var stored = store(new Date(0)).set(field, value);
+        expect(stored.dump()).toEqual(date);
+      });
+    });
+
+    it("with patch", function () {
+      var stored = store(new Date(0)).patch({ full_year: 1987, month: 10, date: 2 });
+      var date = new Date(1987, 10, 2);
+      expect(stored.dump()).toEqual(date);
+    });
+  });
+
   describe("implements dumping", function () {
     var date = new Date();
     var stored = store(date);
