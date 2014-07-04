@@ -1,5 +1,7 @@
 "use strict";
 
+var _ = require("underscore");
+
 var store = require("../lib");
 
 describe("storing dates, ", function () {
@@ -66,7 +68,7 @@ describe("storing dates, ", function () {
       utc_seconds: "getUTCSeconds"
     };
 
-    store(specs).forEach(function (method, field) {
+    _.forEach(specs, function (method, field) {
       it(field, function () {
         expect(stored(field)).toBe(date[method]());
       });
@@ -115,7 +117,7 @@ describe("storing dates, ", function () {
       utc_seconds: "setUTCSeconds"
     };
 
-    store(specs).forEach(function (method, field) {
+    _.forEach(specs, function (method, field) {
       var value = 6;
       it("set " + field, function () {
         var date = new Date(0);
@@ -125,7 +127,7 @@ describe("storing dates, ", function () {
       });
     });
 
-    store(specs).forEach(function (set_method, field) {
+    _.forEach(specs, function (set_method, field) {
       var get_method = set_method.replace(/^set/, "get");
       it("update " + field, function () {
         var date = new Date(0);
