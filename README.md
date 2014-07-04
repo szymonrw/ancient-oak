@@ -87,10 +87,12 @@ of their expected behaviours.
 
 -  **Dates**
 
-   Reflect native date objects, getters and setters accessible as
-   fields, for example `.set("utc_hours", 1)`. Does not implement
-   iteration over properties (no `forEach`, `map` and `reduce` but if
-   a valid case for them is found then they'll be added).
+   Reflect native date objects. Native `.get*` and `.set*` methods are
+   accessible with the getter, `.set`, `.patch` and `.update`, for
+   example `.set("utc_hours", 1)` or `.update("utc_hours", function
+   (h) { return h + 1 })`. Does not implement iteration over
+   properties (no `forEach`, `map` and `reduce` but if a valid case
+   for them is found then they'll be added).
 
 ## Quick reminder
 
