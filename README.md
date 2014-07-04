@@ -41,7 +41,7 @@ There are three ways of using ancient-oak:
 
 ## Resources
 
-- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [szywon](http://szywon.pl), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://szywon.pl/talks/immutable-data-trees))
+- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [brainshave](http://brainshave.com), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://brainshave.com/talks/immutable-data-trees))
 - talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com), [example project](https://github.com/jgwhite/ember-ancient-oak))
 - article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
 
@@ -85,9 +85,16 @@ of their expected behaviours.
    Sorted integer keys, size reported in `size` field, extra methods:
    `push`, `pop`, `last`.
 
+-  **Dates**
+
+   Reflect native date objects, getters and setters accessible as
+   fields, for example `.set("utc_hours", 1)`. Does not implement
+   iteration over properties (no `forEach`, `map` and `reduce` but if
+   a valid case for them is found then they'll be added).
+
 ## Quick reminder
 
-Some types in JavaScipt (booleans, numbers and Strings) are already
+Some types in JavaScipt (booleans, numbers and strings) are already
 immutable and don't need any special wrapping.
 
 ## Usage
