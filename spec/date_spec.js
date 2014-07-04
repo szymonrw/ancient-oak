@@ -117,13 +117,26 @@ describe("storing dates, ", function () {
 
     store(specs).forEach(function (method, field) {
       var value = 6;
-      it(field, function () {
+      it("set " + field, function () {
         var date = new Date(0);
         date[method](value);
         var stored = store(new Date(0)).set(field, value);
         expect(stored.dump()).toEqual(date);
       });
     });
+
+    store(specs).forEach(function (set_method, field) {
+      var get_method = set_method.replace(/^set/, "get");
+      it("update " + field, function () {
+        var date = new Date(0);
+        date[set_method](date[get_method]() + 1);
+        var stored = store(new Date(0)).update(field, function (value) {
+          return value + 1;
+        });
+        expect(stored.dump()).toEqual(date);
+      });
+    });
+
 
     it("with patch", function () {
       var stored = store(new Date(0)).patch({ full_year: 1987, month: 10, date: 2 });
