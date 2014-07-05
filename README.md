@@ -41,7 +41,7 @@ There are three ways of using ancient-oak:
 
 ## Resources
 
-- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [szywon](http://szywon.pl), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://szywon.pl/talks/immutable-data-trees))
+- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [brainshave](http://brainshave.com), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://brainshave.com/talks/immutable-data-trees))
 - talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com), [example project](https://github.com/jgwhite/ember-ancient-oak))
 - article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
 
@@ -72,23 +72,40 @@ around.
 
 ## Types
 
-Ancient Oak's types map 1:1 to JavaScript types. They inherit most
-of their expected behaviours.
+Ancient Oak's types map 1:1 to JavaScript types. They inherit most of
+their expected behaviours. Currently Ancient Oak is meant to work best
+with trees of plain objects, arrays, dates and primitive types. Think
+of it as plain data.
 
--  **Hashes/Objects**
+### Hashes/Objects
 
-   As with regular objects in JavaScript, keys are not guarantied to
-   be sorted.
+As with regular objects in JavaScript, keys are not guarantied to
+be sorted.
 
--  **Arrays**
+### Arrays
 
-   Sorted integer keys, size reported in `size` field, extra methods:
-   `push`, `pop`, `last`.
+Sorted integer keys, size reported in `.size` field, extra methods:
+`.push`, `.pop`, `.last`.
 
-## Quick reminder
+### Dates
 
-Some types in JavaScipt (booleans, numbers and Strings) are already
-immutable and don't need any special wrapping.
+Reflect native date objects. Native `.get*` and `.set*` methods are
+accessible with the getter, `.set`, `.patch` and `.update`. Name of
+properties can be written either with underscores or in camel case,
+"utc" can be lowercase.
+
+    var d1 = I(new Date)
+    var d2 = d1.set("utc_hours", 1)
+    var d3 = d1.update("utc_hours", function (h) { return h + 1 })
+
+Dates don't implement `.rm` and iteration over properties (no
+`.forEach`, `.map` and `.reduce` but if a valid case for them is
+found then they'll be added).
+
+### Primitive types
+
+Primitive types in JavaScipt (booleans, numbers and strings) are
+already immutable and don't need any special wrapping.
 
 ## Usage
 
@@ -108,7 +125,9 @@ version.
          reduce: [Function: reduce],
          map: [Function: map] }
 
-The returned function is a getter for this structure. Example:
+### The Getter
+
+The returned function is the **getter** for this structure. Example:
 
     => I({a: 1})("a")
     <= 1
@@ -174,7 +193,7 @@ invokation. Returns the value returned by the last invokation of `fn`.
 
 ### `.dump()` & `.json()`
 
-`dump` returns representation of the tree in plain JavaScript. `json`
+`.dump` returns representation of the tree in plain JavaScript. `.json`
 does the same but returns a JSON string instead.
 
 ## Why
@@ -184,7 +203,7 @@ options:
 
 1.  send a new deep copy of the object
 
-2.  `freeze` the object before sending, preventing it from being
+2.  `.freeze` the object before sending, preventing it from being
     modified any further by anyone
 
 3.  assume that from now on the objects belong to the other module and
