@@ -72,8 +72,10 @@ around.
 
 ## Types
 
-Ancient Oak's types map 1:1 to JavaScript types. They inherit most
-of their expected behaviours.
+Ancient Oak's types map 1:1 to JavaScript types. They inherit most of
+their expected behaviours. Currently Ancient Oak is meant to work best
+with trees of plain objects, arrays, dates and primitive types. Think
+of it as plain data.
 
 ### Hashes/Objects
 
@@ -100,10 +102,10 @@ Dates don't implement `.rm` and iteration over properties (no
 `.forEach`, `.map` and `.reduce` but if a valid case for them is
 found then they'll be added).
 
-## Quick reminder
+### Primitive types
 
-Some types in JavaScipt (booleans, numbers and strings) are already
-immutable and don't need any special wrapping.
+Primitive types in JavaScipt (booleans, numbers and strings) are
+already immutable and don't need any special wrapping.
 
 ## Usage
 
