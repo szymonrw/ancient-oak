@@ -82,16 +82,16 @@ of their expected behaviours.
 
 -  **Arrays**
 
-   Sorted integer keys, size reported in `size` field, extra methods:
-   `push`, `pop`, `last`.
+   Sorted integer keys, size reported in `.size` field, extra methods:
+   `.push`, `.pop`, `.last`.
 
 -  **Dates**
 
    Reflect native date objects. Native `.get*` and `.set*` methods are
    accessible with the getter, `.set`, `.patch` and `.update`, for
    example `.set("utc_hours", 1)` or `.update("utc_hours", function
-   (h) { return h + 1 })`. Does not implement `rm` and iteration over
-   properties (no `forEach`, `map` and `reduce` but if a valid case
+   (h) { return h + 1 })`. Does not implement `.rm` and iteration over
+   properties (no `.forEach`, `.map` and `.reduce` but if a valid case
    for them is found then they'll be added).
 
 ## Quick reminder
@@ -183,7 +183,7 @@ invokation. Returns the value returned by the last invokation of `fn`.
 
 ### `.dump()` & `.json()`
 
-`dump` returns representation of the tree in plain JavaScript. `json`
+`.dump` returns representation of the tree in plain JavaScript. `.json`
 does the same but returns a JSON string instead.
 
 ## Why
@@ -193,7 +193,7 @@ options:
 
 1.  send a new deep copy of the object
 
-2.  `freeze` the object before sending, preventing it from being
+2.  `.freeze` the object before sending, preventing it from being
     modified any further by anyone
 
 3.  assume that from now on the objects belong to the other module and
