@@ -45,17 +45,6 @@ There are three ways of using ancient-oak:
 - talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com), [example project](https://github.com/jgwhite/ember-ancient-oak))
 - article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
 
-## Included scripts
-
-To generate standalone versions of the library and the docs you can
-run those two commands.
-
-    npm run dist
-    npm run docs
-
-Scripts in `scripts/` folder are meant to be run with `npm run` because
-they depend on the environment npm is setting for them.
-
 ## Use cases
 
 There are two main use cases:
@@ -225,3 +214,16 @@ Each solution have some drawbacks:
     and sender vulnerable to unsolicited changes to the object.
 
 *…to be continued…* ;)
+
+## Included scripts
+
+Scripts in the `scripts` directory are meant to be run with `npm run`:
+
+- `npm test`: run test suite
+- `npm run dist`: generate standalone versions
+- `npm run docs`: generate HTML doc from the README, deprecated
+- `npm run release`: meant to be only run by a maintainer, build the standalone version, publish to npm and a git tag with the current version
+
+## Licence
+
+MIT, see [COPYING](COPYING).

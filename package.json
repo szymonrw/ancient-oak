@@ -1,6 +1,6 @@
 {
   "name": "ancient-oak",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "scripts": {
     "dist": "scripts/dist",
     "docs": "scripts/docs",
@@ -8,6 +8,8 @@
     "test": "jasmine-node spec"
   },
   "author": "Szymon Witamborski <simon@brainshave.com>",
+  "license": "MIT",
+  "main": "./lib/index",
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -18,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/brainshave/ancient-oak/issues"
   },
-  "main": "./lib/index",
   "devDependencies": {
     "browserify": "3",
     "jasmine-node": "1",
