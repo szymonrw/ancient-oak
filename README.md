@@ -88,11 +88,17 @@ of their expected behaviours.
 -  **Dates**
 
    Reflect native date objects. Native `.get*` and `.set*` methods are
-   accessible with the getter, `.set`, `.patch` and `.update`, for
-   example `.set("utc_hours", 1)` or `.update("utc_hours", function
-   (h) { return h + 1 })`. Does not implement `.rm` and iteration over
-   properties (no `.forEach`, `.map` and `.reduce` but if a valid case
-   for them is found then they'll be added).
+   accessible with the getter, `.set`, `.patch` and `.update`. Name of
+   properties can be written either with underscores or in camel case,
+   "utc" can be lowercase.
+
+       var d1 = I(new Date)
+       var d2 = d1.set("utc_hours", 1)
+       var d3 = d1.update("utc_hours", function (h) { return h + 1 })
+
+   Dates don't implement `.rm` and iteration over properties (no
+   `.forEach`, `.map` and `.reduce` but if a valid case for them is
+   found then they'll be added).
 
 ## Quick reminder
 
