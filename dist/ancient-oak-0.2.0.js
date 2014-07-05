@@ -48,16 +48,11 @@ function numbers_keys (bits) {
 
 module.exports = storage;
 
+var slice = _dereq_("../slice");
+
 function pass (value) {
   return value;
 }
-
-var slice = (function () {
-  var _slice = Array.prototype.slice;
-  return function slice (array, begin, end) {
-    return _slice.call(array, begin, end);
-  }
-})();
 
 function storage (options) {
   var split_key = options.keys.split_key;
@@ -363,7 +358,7 @@ function storage (options) {
   }
 }
 
-},{}],3:[function(_dereq_,module,exports){
+},{"../slice":5}],3:[function(_dereq_,module,exports){
 "use strict";
 
 module.exports = string_keys;
@@ -423,6 +418,8 @@ store.immutable = immutable;
 module.exports = store;
 
 var storages = [
+  _dereq_("./types/primitive"),
+  _dereq_("./types/date"),
   _dereq_("./types/array")(ARRAY_KEY_BITS, store),
   _dereq_("./types/object")(HASH_KEY_WIDTH, store)
 ];
@@ -430,11 +427,13 @@ var storages = [
 // Find first storage that returns is_it() === true
 function storage_for (value) {
   var i;
+  var length = storages.length;
+
   for (i = 0;
-       i < storages.length && !storages[i].is_it(value);
+       i < length && !storages[i].is_it(value);
        ++i);
 
-  return (i < storages.length
+  return (i < length
           ? storages[i]
           : null);
 }
@@ -451,7 +450,18 @@ function store (value) {
           : value);
 }
 
-},{"./types/array":5,"./types/object":6}],5:[function(_dereq_,module,exports){
+},{"./types/array":6,"./types/date":7,"./types/object":8,"./types/primitive":9}],5:[function(_dereq_,module,exports){
+"use strict";
+
+module.exports = slice;
+
+var _slice = Array.prototype.slice;
+
+function slice (array, begin, end) {
+  return _slice.call(array, begin, end);
+}
+
+},{}],6:[function(_dereq_,module,exports){
 "use strict";
 
 module.exports = array_storage_config;
@@ -503,7 +513,94 @@ function extend (api) {
   }
 }
 
-},{"../balanced_storage/sorted_number_keys":1,"../balanced_storage/storage":2}],6:[function(_dereq_,module,exports){
+},{"../balanced_storage/sorted_number_keys":1,"../balanced_storage/storage":2}],7:[function(_dereq_,module,exports){
+"use strict";
+
+store.is_it = is_it;
+
+module.exports = store;
+
+var slice = _dereq_("../slice");
+
+function is_it (value) {
+  return value instanceof Date;
+}
+
+function store (date) {
+  var value = date.valueOf();
+  date = null; // allow the input value to be GC'd
+
+  get.value = value;
+  get.dump = dump;
+  get.json = json;
+  get.set = set;
+  get.update = update;
+  get.patch = patch;
+
+  Object.freeze(get);
+
+  return get;
+
+  function get (field) {
+    // recreate date object and cache it
+    if (!date) date = dump();
+
+    var method = "get" + camel_case(field);
+
+    return date[method]();
+  }
+
+  function set (field) {
+    var method = "set" + camel_case(field);
+    var args = slice(arguments, 1);
+
+    var new_date = dump();
+    new_date[method].apply(new_date, args);
+
+    return store(new_date);
+  }
+
+  function update (field, modify) {
+    var prop = camel_case(field);
+    var set_method = "set" + prop;
+    var get_method = "get" + prop;
+
+    var new_date = dump();
+
+    var field_value = modify(new_date[get_method]());
+    new_date[set_method](field_value);
+
+    return store(new_date);
+  }
+
+  function patch (fields) {
+    var new_date = dump();
+
+    Object.keys(fields).forEach(function (field) {
+      var method = "set" + camel_case(field);
+      var value = fields[field];
+      new_date[method](value);
+    });
+
+    return store(new_date);
+  }
+
+  function dump () {
+    return new Date(value);
+  }
+
+  function json () {
+    return JSON.stringify(dump());
+  }
+
+  function camel_case (field) {
+    return field.replace(/utc|_.|^./g, function (str) {
+      return str.toUpperCase();
+    }).replace(/_/g, "");
+  }
+}
+
+},{"../slice":5}],8:[function(_dereq_,module,exports){
 "use strict";
 
 module.exports = hash_storage_config;
@@ -523,6 +620,21 @@ function is_it (value) {
   return typeof value === "object";
 }
 
-},{"../balanced_storage/storage":2,"../balanced_storage/string_keys":3}]},{},[4])
+},{"../balanced_storage/storage":2,"../balanced_storage/string_keys":3}],9:[function(_dereq_,module,exports){
+"use strict";
+
+module.exports = storage;
+
+storage.is_it = is_it;
+
+function storage (value) {
+  return value;
+}
+
+function is_it (value) {
+  return value === null || value === undefined || typeof value !== "object";
+}
+
+},{}]},{},[4])
 (4)
 });
