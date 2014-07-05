@@ -75,30 +75,30 @@ around.
 Ancient Oak's types map 1:1 to JavaScript types. They inherit most
 of their expected behaviours.
 
--  **Hashes/Objects**
+### Hashes/Objects
 
-   As with regular objects in JavaScript, keys are not guarantied to
-   be sorted.
+As with regular objects in JavaScript, keys are not guarantied to
+be sorted.
 
--  **Arrays**
+### Arrays
 
-   Sorted integer keys, size reported in `.size` field, extra methods:
-   `.push`, `.pop`, `.last`.
+Sorted integer keys, size reported in `.size` field, extra methods:
+`.push`, `.pop`, `.last`.
 
--  **Dates**
+### Dates
 
-   Reflect native date objects. Native `.get*` and `.set*` methods are
-   accessible with the getter, `.set`, `.patch` and `.update`. Name of
-   properties can be written either with underscores or in camel case,
-   "utc" can be lowercase.
+Reflect native date objects. Native `.get*` and `.set*` methods are
+accessible with the getter, `.set`, `.patch` and `.update`. Name of
+properties can be written either with underscores or in camel case,
+"utc" can be lowercase.
 
-       var d1 = I(new Date)
-       var d2 = d1.set("utc_hours", 1)
-       var d3 = d1.update("utc_hours", function (h) { return h + 1 })
+    var d1 = I(new Date)
+    var d2 = d1.set("utc_hours", 1)
+    var d3 = d1.update("utc_hours", function (h) { return h + 1 })
 
-   Dates don't implement `.rm` and iteration over properties (no
-   `.forEach`, `.map` and `.reduce` but if a valid case for them is
-   found then they'll be added).
+Dates don't implement `.rm` and iteration over properties (no
+`.forEach`, `.map` and `.reduce` but if a valid case for them is
+found then they'll be added).
 
 ## Quick reminder
 
@@ -123,7 +123,9 @@ version.
          reduce: [Function: reduce],
          map: [Function: map] }
 
-The returned function is a getter for this structure. Example:
+### The Getter
+
+The returned function is the **getter** for this structure. Example:
 
     => I({a: 1})("a")
     <= 1
