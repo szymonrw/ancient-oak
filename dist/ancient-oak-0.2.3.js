@@ -367,6 +367,7 @@ function string_keys (width) {
   return {
     zero: "",
     split_key: function split_key (key, depth) {
+      key = key.toString();
       var parts = new Array(depth);
       var padding = depth - min_depth(key);
       var i, k;
@@ -403,7 +404,7 @@ function string_keys (width) {
   }
 
   function min_depth (key) {
-    return Math.ceil(key.length / width);
+    return Math.ceil(key.toString().length / width);
   }
 }
 
