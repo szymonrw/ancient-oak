@@ -51,13 +51,4 @@ describe("store", function () {
       expect(result instanceof Array).toBe(true);
     });
   });
-
-  describe("given a primitive", function () {
-    it("returns that primitive", function () {
-      expect(store(1)).toBe(1);
-      expect(store(true)).toBe(true);
-      expect(store(false)).toBe(false);
-      expect(store("asdf")).toBe("asdf");
-    });
-  });
 });
