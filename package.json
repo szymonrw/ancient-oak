@@ -5,7 +5,8 @@
     "dist": "scripts/dist",
     "docs": "scripts/docs",
     "release": "scripts/release",
-    "test": "jasmine-node spec"
+    "test": "jasmine-node spec",
+    "testv": "jasmine-node --verbose spec"
   },
   "author": "Szymon Witamborski <simon@brainshave.com>",
   "license": "MIT",
