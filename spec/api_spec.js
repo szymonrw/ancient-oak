@@ -105,4 +105,32 @@ describe("api", function () {
       expect(v1.size).toBe(3);
     });
   });
+
+  describe(".filter", function () {
+    it("filters objects", function () {
+      var v0 = store({ a: 1, b: 2, c: 3, d: 4 });
+      var v1 = v0.filter(function (value) {
+        return value % 2 === 0;
+      });
+      var v2 = v0.filter(function (_, key) {
+        return key === "a" || key === "c";
+      });
+
+      expect(v1.dump()).toEqual({ b: 2, d: 4 });
+      expect(v2.dump()).toEqual({ a: 1, c: 3 });
+    });
+
+    it("filters arrays", function () {
+      var v0 = store([1, 2, 3, 4]);
+      var v1 = v0.filter(function (value) {
+        return value % 2 === 0;
+      });
+      var v2 = v0.filter(function (_, key) {
+        return key % 2 === 0;
+      });
+
+      expect(v1.dump()).toEqual([2, 4]);
+      expect(v2.dump()).toEqual([1, 3]);
+    });
+  });
 });
