@@ -74,7 +74,7 @@ be sorted.
 ### Arrays
 
 Sorted integer keys, size reported in `.size` field, extra methods:
-`.push`, `.pop`, `.last`.
+`.push`, `.pop`, `.slice`.
 
 ### Dates
 
@@ -179,6 +179,10 @@ Invokes `fn` for the first pair of `value` and `key` with
 `accumulator` being the value of `init`. For subsequent calls,
 `accumulator` takes the return value of the previous
 invokation. Returns the value returned by the last invokation of `fn`.
+
+### `.filter(fn(value, key))` (iterator)
+
+Filters values by the return value of `fn` called on each element.
 
 ### `.dump()` & `.json()`
 
