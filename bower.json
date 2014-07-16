@@ -1,7 +1,7 @@
 {
   "name": "ancient-oak",
-  "version": "0.2.3",
-  "main": "dist/ancient-oak-0.2.3.js",
+  "version": "0.3.0",
+  "main": "dist/ancient-oak-0.3.0.js",
   "ignore": [
     "spec",
     "scripts"

@@ -133,8 +133,9 @@ function storage (options) {
     get.forEach = forEach;
     get.reduce = reduce;
     get.map = map;
+    get.filter = filter;
 
-    extend(get);
+    extend(get, store);
 
     for (var name in props) {
       get[name] = props[name];
@@ -196,7 +197,7 @@ function storage (options) {
               // decrease the depth
               ? shrink(root[zero], old_depth - 1, new_props)
               : elements === 0
-              // We have no element, we can return empty collection
+              // We have no elements, we can return empty collection
               ? api()
               // We have more than one element, we cannot decrease depth
               : api(root, old_depth, new_props));
@@ -286,6 +287,14 @@ function storage (options) {
         result = fn(result, value, key, get);
       });
       return result;
+    }
+
+    function filter (fn) {
+      return reduce(function (result, value, key) {
+        return (fn(value, key)
+                ? result.set(key, value)
+                : result);
+      }, api());
     }
 
     function forEach (fn) {
@@ -490,18 +499,16 @@ function props (old_props, action, key) {
     key = parseInt(key, 10);
   }
 
-  if (action === "rm" && key === size - 1) {
-    size = size - 1;
-  } else {
-    size = Math.max(size, key + 1);
-  }
+  size = Math.max(size, key + 1);
 
   return { size: size };
 }
 
-function extend (api) {
+function extend (api, store) {
   api.push = push;
   api.pop = pop;
+  api.filter = filter;
+  api.slice = slice;
 
   api.size = 0;
 
@@ -509,8 +516,28 @@ function extend (api) {
     return api.set(api.size, value);
   }
 
-  function pop (value) {
-    return api.rm(api.size - 1);
+  function filter (fn) {
+    return api.reduce(function (result, value, key) {
+      return (fn(value, key)
+              ? result.push(value)
+              : result);
+    }, store([]));
+  }
+
+  function slice (start, end) {
+    if (arguments.length === 1) {
+      end = api.size;
+    } else if (end < 0) {
+      end = api.size + end;
+    }
+
+    return api.filter(function (_, key) {
+      return key >= start && key < end;
+    });
+  }
+
+  function pop () {
+    return slice(0, -1);
   }
 }
 
