@@ -37,6 +37,7 @@ There are three ways of using ancient-oak:
 
 - `npm install ancient-oak` for node and browserify projects
 - `bower install ancient-oak` for bower users
+- `component install brainshave/ancient-oak` for component users
 - grab the browser-ready release from the [dist folder](https://github.com/brainshave/ancient-oak/tree/master/dist)
 
 ## Resources
