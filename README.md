@@ -112,7 +112,7 @@ Once the structure is immutable we need to get the data back somehow.
 
 ### `get(key)`
 
-**This is the function returned the immortaliser, not a method.** The
+**This is the function returned by the immortaliser, not a method.** The
 rest of the API are methods on `get`.
 
 Returns the value for `key`. Example:
