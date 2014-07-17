@@ -13,23 +13,30 @@ Features!
 
     Getting, setting, deep-patching, iterating, mapping, reducing…
 
--   **Each modification produces a new version:**
+-   **Forking instead of modification:**
 
-    The old version is intact and can be still used as if no
-    modification was made.
+    You can only apply changes by creating new versions. The old
+    version is intact and can be still used as if no modification was
+    made.
 
 -   **Lightweight versioning:**
 
-    New version is not a full copy, only the difference is stored.
+    Creating new versions is cheap, thanks to structure sharing
+    between them. (It's safe because they're immutable!)
 
--   Zero dependencies.
+-   **1:1 mapping to native JS types:**
+
+    Supports primitives, arrays, plain objects and dates.
+
+-   **Zero dependencies.**
 
 For storage Ancient Oak uses exactly the same techniques as Clojure's
 immutable data structures. (see [Resources](#resources))
 
 The main difference between Ancient Oak and other JS immutable data
-libraries is that Ancient Oak will transform the whole input into
-immutable structures, recursively and without exception.
+libraries (like mori) is that Ancient Oak has 1:1 mapping to native
+types and transforms whole trees into immutable structures,
+recursively and without exception.
 
 ## Usage
 
@@ -39,26 +46,6 @@ There are three ways of using ancient-oak:
 - `bower install ancient-oak` for bower users
 - `component install brainshave/ancient-oak` for component users
 - grab the browser-ready standalone release from the [dist folder](https://github.com/brainshave/ancient-oak/tree/master/dist)
-
-## Resources
-
-- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [brainshave](http://brainshave.com), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://brainshave.com/talks/immutable-data-trees))
-- talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com), [example project](https://github.com/jgwhite/ember-ancient-oak))
-- article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
-
-## Use cases
-
-There are two main use cases:
-
-1.  You create a data structure from scratch: you just create an empty
-    collection and start adding values.
-
-2.  You convert received data as soon as you get a hold of it: for
-    example after an XHR request you convert the data just after you
-    receive it.
-
-Once you convert your data to immutable structures is safe to pass it
-around.
 
 ## Types
 
@@ -202,6 +189,12 @@ value of `fn(value, key)`. Preserves type of the collection
 Filters values by the return value of `fn` called on each
 element. Preserves the type (object/array).
 
+## Resources
+
+- talk: [Immutable Data Trees in JavaScript](http://vimeo.com/86694423) by [brainshave](http://brainshave.com), (introduction, quite technical, February 2014 at [Ember London](http://emberlondon.com), [slides](http://brainshave.com/talks/immutable-data-trees))
+- talk: [Using Persistent Data Structures with Ember.js](http://vimeo.com/89089876) by [Jamie White](http://jgwhite.co.uk) (March 2014 at [Ember London](http://emberlondon.com), [example project](https://github.com/jgwhite/ember-ancient-oak))
+- article: [Understanding Clojure’s Persistent Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1) by Jean Niklas L’orange is a very good write-up on how those data structures work internally
+
 ## Why
 
 The problem: When we send data from one module to another we have four
@@ -227,10 +220,11 @@ Each solution have some drawbacks:
 3.  requires to enforce a practice, that might be difficult to make
     everyone on the team to remember it at all times.
 
-4.  this is makes it even more difficult than 3. making both receiver
-    and sender vulnerable to unsolicited changes to the object.
+4.  this is makes it even more difficult than number 3 making both
+    receiver and sender vulnerable to unsolicited changes to the
+    object.
 
-*…to be continued…* ;)
+More on this subject in [resources](#resources).
 
 ## Included scripts
 
