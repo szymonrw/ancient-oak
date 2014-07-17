@@ -95,7 +95,7 @@ Dates don't implement `.rm` or any iterators (`.map`, `.reduce`, etc.).
 Primitive types in JavaScript (booleans, numbers and strings) are
 already immutable and don't need any special wrapping.
 
-## Usage
+## Immortalising
 
 Ancient Oak exposes one function: the immortaliser (`I` in the
 standalone build).
@@ -104,16 +104,18 @@ The immortaliser takes arbitrary data tree and returns its immutable
 version.
 
     => I({a: 1, b: [{c: 2}, {d: 3}]})
+    <= function get (key) {…}
 
-    <= { [Function: get]
-         set: [Function: modify],
-         update: [Function: modify],
-         … }
+## Getting, dumping
 
-## The Getter
+Once the structure is immutable we need to get the data back somehow.
 
-The function returned the immortaliser a tree is the **getter** for
-this structure. Example:
+### `get(key)`
+
+**This is the function returned the immortaliser, not a method.** The
+rest of the API are methods on `get`.
+
+Returns the value for `key`. Example:
 
     => I({a: 1})("a")
     <= 1
@@ -132,7 +134,13 @@ To get a value at a deeper level, we just travel further down:
 Note: All methods on the getter are independent of `this` value, so
 they can be safely passed around without losing their context.
 
-## Forkers
+### `.dump()` & `.json()`
+
+`.dump()` returns representation of the tree in plain JavaScript.
+
+`.json()` returns JSON representation of the tree.
+
+## Forking
 
 Forkers are methods that create new versions (forks) of a structure
 with selected values updated or removed.
@@ -166,9 +174,9 @@ Deep delete. Returns a version without the part of the tree pointed by
     => I({a: 1, b: {c: 2, d: 3}}).rm("b", "c")
     <= I({a: 1, b: {d: 3}})
 
-## Iterators
+## Iterating
 
-Iterate over every element in the array or object.
+Iterators walk over every element in the array or object.
 
 ### `.forEach(fn(value, key))`
 
@@ -193,11 +201,6 @@ value of `fn(value, key)`. Preserves type of the collection
 
 Filters values by the return value of `fn` called on each
 element. Preserves the type (object/array).
-
-## `.dump()` & `.json()`
-
-`.dump` returns representation of the tree in plain JavaScript. `.json`
-does the same but returns a JSON string instead.
 
 ## Why
 
