@@ -168,8 +168,7 @@ Iterators walk over every element in the array or object.
 ### `.forEach(fn(value, key))`
 
 Invokes `fn` for each value. The order of keys depends on the type of
-the collection (no guarantee of order for . Does not produce any new versions. Returns the tree it
-was called on.
+the collection. Returns the unmodified tree.
 
 ### `.reduce(fn(accumulator, value, key), init)`
 
@@ -181,7 +180,7 @@ invocation. Returns the value returned by the last invocation of `fn`.
 ### `.map(fn(value, key))`
 
 Returns a new version where every value is updated with the return
-value of `fn(value, key)`. Preserves type of the collection
+value of `fn(value, key)`. Preserves the type of the collection
 (object/array).
 
 ### `.filter(fn(value, key))`
