@@ -4,15 +4,6 @@ Ancient Oak is an immutable data *trees* library.
 
 Features!
 
--   **Deep immutability:**
-
-    Makes the whole tree of data immutable, not only the top-level
-    structure.
-
--   **Provides convenient interface to your data:**
-
-    Getting, setting, deep-patching, iterating, mapping, reducing…
-
 -   **Forking instead of modification:**
 
     You can only apply changes by creating new versions. The old
@@ -27,6 +18,15 @@ Features!
 -   **1:1 mapping to native JS types:**
 
     Supports primitives, arrays, plain objects and dates.
+
+-   **Deep immutability:**
+
+    Makes the whole tree of data immutable, not only the top-level
+    structure.
+
+-   **Provides convenient interface to your data:**
+
+    Getting, setting, deep-patching, iterating, mapping, reducing…
 
 -   **Zero dependencies.**
 
