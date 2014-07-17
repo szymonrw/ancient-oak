@@ -38,7 +38,7 @@ There are three ways of using ancient-oak:
 - `npm install ancient-oak` for node and browserify projects
 - `bower install ancient-oak` for bower users
 - `component install brainshave/ancient-oak` for component users
-- grab the browser-ready release from the [dist folder](https://github.com/brainshave/ancient-oak/tree/master/dist)
+- grab the browser-ready standalone release from the [dist folder](https://github.com/brainshave/ancient-oak/tree/master/dist)
 
 ## Resources
 
@@ -65,7 +65,7 @@ around.
 Ancient Oak's types map 1:1 to JavaScript types. They inherit most of
 their expected behaviours. Currently Ancient Oak is meant to work best
 with trees of plain objects, arrays, dates and primitive types. Think
-of it as plain data.
+of plain data trees, JSON-able.
 
 ### Hashes/Objects
 
@@ -88,20 +88,19 @@ properties can be written either with underscores or in camel case,
     var d2 = d1.set("utc_hours", 1)
     var d3 = d1.update("utc_hours", function (h) { return h + 1 })
 
-Dates don't implement `.rm` and iteration over properties (no
-`.forEach`, `.map` and `.reduce` but if a valid case for them is
-found then they'll be added).
+Dates don't implement `.rm` or any iterators (`.map`, `.reduce`, etc.).
 
 ### Primitive types
 
-Primitive types in JavaScipt (booleans, numbers and strings) are
+Primitive types in JavaScript (booleans, numbers and strings) are
 already immutable and don't need any special wrapping.
 
 ## Usage
 
-Ancient Oak exposes one function: the immutabler.
+Ancient Oak exposes one function: the immortaliser (`I` in the
+standalone build).
 
-The immutabler takes arbitrary data tree and returns its immutable
+The immortaliser takes arbitrary data tree and returns its immutable
 version.
 
     => I({a: 1, b: [{c: 2}, {d: 3}]})
@@ -109,15 +108,12 @@ version.
     <= { [Function: get]
          set: [Function: modify],
          update: [Function: modify],
-         patch: [Function: patch],
-         rm: [Function: rm],
-         forEach: [Function: forEach],
-         reduce: [Function: reduce],
-         map: [Function: map] }
+         … }
 
-### The Getter
+## The Getter
 
-The returned function is the **getter** for this structure. Example:
+The function returned the immortaliser a tree is the **getter** for
+this structure. Example:
 
     => I({a: 1})("a")
     <= 1
@@ -126,66 +122,79 @@ For deeper trees, every node will have its own getter and similar
 interface, recursively. Example:
 
     => I({a: {b: 1}})("a")
-    <= { [Function: get]
-         set, update, patch, … }
+    <= I({b: 1})
 
-To get a value at deeper level, you can just travel further:
+To get a value at a deeper level, we just travel further down:
 
     => I({a: {b: 1}})("a")("b")
     <= 1
 
 Note: All methods on the getter are independent of `this` value, so
-they can be safely passed around without loosing their context.
+they can be safely passed around without losing their context.
 
-### `.set(key, value)` (mutator)
+## Forkers
 
-Set's value for `key` to `value` and returns a new version of the
-tree.
+Forkers are methods that create new versions (forks) of a structure
+with selected values updated or removed.
 
-### `.update(key, fn(old))` (mutator)
+### `.set(key, value)`
 
-Set's value for `key` to the return value of `fn(old)`. `old` is the
-old value for that key.
+New version has the value for `key` set to `value`.
 
-### `.patch(diff)` (mutator)
+### `.update(key, fn(old))`
 
-Deep patching method. `diff` is a tree of values to be updated. For
-example:
+New version has the value for the `key` updated to the return value of
+`fn` called on the old value for that key.
+
+    => I({a: 1}).update(function (v) { return v + 1 })
+    <= I({a: 2})
+
+### `.patch(diff)`
+
+Deep patching. `diff` is a tree of values to be updated in the new
+version. For example:
 
     => I({a: 1, b: {c: 2, d: 3}}).patch({b: {c: 4}, e: 5})
-    // The returned version is now {a: 1, b: {c: 4, d: 3}, e: 5}
+    <= I({a: 1, b: {c: 4, d: 3}, e: 5})
 
 
-### `.rm(keys…)` (mutator)
+### `.rm(keys…)`
 
-Deep delete method. The method will delete value at "address" pointed
-by series of keys.
+Deep delete. Returns a version without the part of the tree pointed by
+`keys…` (multiple arguments).
 
     => I({a: 1, b: {c: 2, d: 3}}).rm("b", "c")
-    // The returned version is now {a: 1, b: {d: 3}}
+    <= I({a: 1, b: {d: 3}})
 
-### `.forEach(fn(value, key))` (iterator)
+## Iterators
+
+Iterate over every element in the array or object.
+
+### `.forEach(fn(value, key))`
 
 Invokes `fn` for each value. The order of keys depends on the type of
-the collection.
+the collection (no guarantee of order for . Does not produce any new versions. Returns the tree it
+was called on.
 
-### `.map(fn(value, key))` (iterator)
-
-Returns a new version where every value is updated with the return
-value of `fn(value, key)`. Preserves type of the collection.
-
-### `.reduce(fn(accumulator, value, key), init)` (iterator)
+### `.reduce(fn(accumulator, value, key), init)`
 
 Invokes `fn` for the first pair of `value` and `key` with
 `accumulator` being the value of `init`. For subsequent calls,
 `accumulator` takes the return value of the previous
-invokation. Returns the value returned by the last invokation of `fn`.
+invocation. Returns the value returned by the last invocation of `fn`.
 
-### `.filter(fn(value, key))` (iterator)
+### `.map(fn(value, key))`
 
-Filters values by the return value of `fn` called on each element.
+Returns a new version where every value is updated with the return
+value of `fn(value, key)`. Preserves type of the collection
+(object/array).
 
-### `.dump()` & `.json()`
+### `.filter(fn(value, key))`
+
+Filters values by the return value of `fn` called on each
+element. Preserves the type (object/array).
+
+## `.dump()` & `.json()`
 
 `.dump` returns representation of the tree in plain JavaScript. `.json`
 does the same but returns a JSON string instead.
@@ -226,8 +235,7 @@ Scripts in the `scripts` directory are meant to be run with `npm run`:
 
 - `npm test`: run test suite
 - `npm run dist`: generate standalone versions
-- `npm run docs`: generate HTML doc from the README, deprecated
-- `npm run release`: meant to be only run by a maintainer, build the standalone version, publish to npm and a git tag with the current version
+- `npm run release`: meant to be only run by a maintainer, build the standalone version, publish to npm and a tag the current version
 
 ## Licence
 
