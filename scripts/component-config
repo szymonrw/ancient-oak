@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+// Generate component's config from package.json
+
+var fs = require("fs");
+
+console.log(JSON.stringify(config(), null, 2));
+
+function config () {
+  var pkg = require("../package");
+
+  return {
+    name: pkg.name,
+    repository: "brainshave/ancient-oak",
+    version: pkg.version,
+    scripts: [
+      "lib/**/*.js"
+    ],
+    main: "lib/index.js"
+  };
+}

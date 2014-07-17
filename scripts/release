@@ -11,6 +11,7 @@ git rm -r "$DIST"
 
 scripts/dist
 scripts/bower-config > bower.json
+scripts/component-config > component.json
 
 git add .
 git commit -m "Build: $npm_package_version"
