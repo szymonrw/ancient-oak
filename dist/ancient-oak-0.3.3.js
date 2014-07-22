@@ -205,6 +205,7 @@ function storage (options) {
 
     function patch (name, value) {
       if (typeof name === "object") {
+        // TODO: support diffs as immutable structures
         var diff = name;
         var result = get;
         for (name in diff) {
