@@ -1,7 +1,14 @@
 {
   "name": "ancient-oak",
   "description": "Immutable data trees library",
-  "version": "0.3.3",
+  "keywords": [
+    "immutable",
+    "data structures",
+    "data trees",
+    "functional",
+    "fp"
+  ],
+  "version": "0.3.4",
   "scripts": {
     "dist": "scripts/dist",
     "docs": "scripts/docs",
