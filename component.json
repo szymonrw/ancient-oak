@@ -1,7 +1,7 @@
 {
   "name": "ancient-oak",
   "repository": "brainshave/ancient-oak",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "scripts": [
     "lib/**/*.js"
   ],

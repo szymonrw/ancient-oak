@@ -125,6 +125,8 @@ function storage (options) {
     get.dump = dump;
     get.json = json;
 
+    // TODO: deepset!
+
     get.set = set;
     get.update = update;
     get.patch = patch;
@@ -540,6 +542,12 @@ function extend (api, store) {
   function pop () {
     return slice(0, -1);
   }
+
+  // TODO:
+  // - last
+  // - concat
+  // - join
+  // - shift
 }
 
 },{"../balanced_storage/sorted_number_keys":1,"../balanced_storage/storage":2}],7:[function(_dereq_,module,exports){
