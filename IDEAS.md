@@ -23,3 +23,9 @@ This way we get rid of all inaccessible references. The shifting part
 is there to limit accumulation of start offset. Because we only allow
 to have empty space in left-most leaf, the maximum start offset is
 only 31 (because leaf size is 32).
+
+## I.parse
+
+Use Ancient Oak as JSON.parse reviver.
+
+vide: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
