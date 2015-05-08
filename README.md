@@ -56,7 +56,7 @@ of plain data trees, JSON-able.
 
 ### Hashes/Objects
 
-As with regular objects in JavaScript, keys are not guarantied to
+As with regular objects in JavaScript, keys are not guaranteed to
 be sorted.
 
 ### Arrays
