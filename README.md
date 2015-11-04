@@ -141,7 +141,7 @@ New version has the value for `key` set to `value`.
 New version has the value for the `key` updated to the return value of
 `fn` called on the old value for that key.
 
-    => I({a: 1}).update(function (v) { return v + 1 })
+    => I({a: 1}).update('a', function (v) { return v + 1 })
     <= I({a: 2})
 
 ### `.patch(diff)`
