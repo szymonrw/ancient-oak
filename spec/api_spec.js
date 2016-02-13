@@ -133,4 +133,24 @@ describe("api", function () {
       expect(v2.dump()).toEqual([1, 3]);
     });
   });
+
+  describe(".nmap", function () {
+    it("maps to native array", function () {
+      var result = store([1, 2, 3]).nmap(function (x) {
+        return x * 2;
+      });
+
+      expect(result instanceof Array).toBe(true, 'result instanceof Array');
+      expect(result).toEqual([2, 4, 6]);
+    });
+
+    it("maps to native object", function () {
+      var result = store({a: 1, b: 2, c: 3}).nmap(function (x) {
+        return x * 2;
+      });
+
+      expect(result instanceof Array).toBe(false, 'result instanceof Array');
+      expect(result).toEqual({a: 2, b: 4, c: 6});
+    });
+  });
 });

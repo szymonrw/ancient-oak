@@ -183,6 +183,10 @@ Returns a new version where every value is updated with the return
 value of `fn(value, key)`. Preserves the type of the collection
 (object/array).
 
+### `.nmap(fn(value,key))`
+
+Same as `map` but returns native object/array.
+
 ### `.filter(fn(value, key))`
 
 Filters values by the return value of `fn` called on each
