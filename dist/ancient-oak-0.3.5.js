@@ -135,6 +135,7 @@ function storage (options) {
     get.forEach = forEach;
     get.reduce = reduce;
     get.map = map;
+    get.nmap = nmap;
     get.filter = filter;
 
     extend(get, store);
@@ -282,6 +283,13 @@ function storage (options) {
       return reduce(function (result, value, key) {
         return result.set(key, fn(value, key, get));
       }, api());
+    }
+
+    function nmap (fn) {
+      return reduce(function (result, value, key) {
+        result[key] = fn(value, key, get);
+        return result;
+      }, new_dump());
     }
 
     function reduce (fn, init) {
