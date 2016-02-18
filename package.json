@@ -14,7 +14,8 @@
     "docs": "scripts/docs",
     "release": "scripts/release",
     "test": "jasmine-node spec",
-    "testv": "jasmine-node --verbose spec"
+    "testv": "jasmine-node --verbose spec",
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Szymon Witamborski <simon@brainshave.com>",
   "license": "MIT",
@@ -31,8 +32,13 @@
   },
   "devDependencies": {
     "browserify": "3",
+    "coveralls": "^2.11.6",
     "jasmine-node": "1",
+    "nyc": "^5.6.0",
     "uglify-js": "*",
     "underscore": "1"
+  },
+  "nyc": {
+    "include": ["lib/**/*.js"]
   }
 }
