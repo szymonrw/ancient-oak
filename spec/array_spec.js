@@ -1,58 +1,55 @@
 "use strict";
 
-var store = require("../lib");
+var OakArray = require("../lib/types/array")
 
-describe("arrays", function () {
-  it("pushes", function () {
-    var v0 = store([1, 2, 3]);
-    var v1 = v0.push(4);
-    expect(v1.size).toBe(4);
-    expect(v1.dump()).toEqual([1, 2, 3, 4]);
-  });
+describe("Array", function () {
+  describe("get", function () {
+    it("reaches multi long-keyed data", function () {
+      var data = []
+      data[27] = []
+      data[27][31] = "hello"
 
-  it("pops", function () {
-    var v0 = store([1, 2, 3]);
-    var v1 = v0.pop();
-    var v2 = v1.pop();
+      var key = (27 << 5) + 31
 
-    expect(v1.size).toBe(2);
-    expect(v2.size).toBe(1);
-    expect(v1.dump()).toEqual([1, 2]);
-    expect(v2.dump()).toEqual([1]);
-  });
+      var array = new OakArray(data, 2)
+      expect(array.get(key)).toBe("hello")
+    })
+  })
 
-  it("slices without end", function () {
-    var v0 = store([1, 2, 3, 4]);
-    var v1 = v0.slice(0);
-    var v2 = v0.slice(1);
-    var v3 = v0.slice(2);
+  describe("push", function () {
+    it("increases length", function () {
+      var v1 = new OakArray()
+      var v2 = v1.push(v1)
+    })
+  })
 
-    expect(v1.size).toBe(v0.size);
-    expect(v2.size).toBe(v0.size - 1);
-    expect(v3.size).toBe(v0.size - 2);
-    expect(v1.dump()).toEqual(v0.dump());
-    expect(v2.dump()).toEqual([2, 3, 4]);
-    expect(v3.dump()).toEqual([3, 4]);
-  });
+  describe("set", function () {
+    var data, key, array
 
-  it("slices with positive end", function () {
-    var v0 = store([1, 2, 3, 4]);
-    var v1 = v0.slice(1, 3);
+    beforeEach(function () {
+      data = [[[]]]
+      data[27] = []
+      data[27][31] = []
+      data[27][31][13] = "hello"
 
-    expect(v1.size).toEqual(2);
-    expect(v1.dump()).toEqual([2, 3]);
-  });
+      key = (27 << 10) + (31 << 5) + 13
+      array = new OakArray().set(key, "hello")
+    })
 
-  it("slices with negative end", function () {
-    var v0 = store([1, 2, 3, 4]);
-    var v1 = v0.slice(1, -1);
-    var v2 = v0.slice(0, -2);
+    it("sets the value", function () {
+      expect(array.get(key)).toBe("hello")
+    })
 
-    expect(v1.size).toEqual(2);
-    expect(v2.size).toEqual(2);
+    it("sets length to key+1", function () {
+      expect(array.length).toBe(key + 1)
+    })
 
-    expect(v1.dump()).toEqual([2, 3]);
-    expect(v2.dump()).toEqual([1, 2]);
-  });
+    it("grows data for long keys", function () {
+      expect(array.depth).toBe(3);
+    })
 
-});
+    it("maintains balanced tree", function () {
+      expect(array.data).toEqual(data)
+    })
+  })
+})

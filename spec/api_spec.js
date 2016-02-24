@@ -1,6 +1,6 @@
 "use strict";
 
-var store = require("../lib");
+//var store = require("../lib");
 
 describe("api", function () {
   describe(".dump and .json", function () {

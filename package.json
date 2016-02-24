@@ -13,7 +13,8 @@
     "dist": "scripts/dist",
     "docs": "scripts/docs",
     "release": "scripts/release",
-    "test": "jasmine-node spec",
+    "test": "JASMINE_CONFIG_PATH=jasmine.json jasmine",
+    "watch-test": "NODE_ENV=test nodemon --watch lib --watch spec --exec npm test",
     "testv": "jasmine-node --verbose spec",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
@@ -33,12 +34,15 @@
   "devDependencies": {
     "browserify": "3",
     "coveralls": "^2.11.6",
-    "jasmine-node": "1",
+    "jasmine": "^2.4.1",
+    "nodemon": "^1.9.0",
     "nyc": "^5.6.0",
     "uglify-js": "*",
     "underscore": "1"
   },
   "nyc": {
-    "include": ["lib/**/*.js"]
+    "include": [
+      "lib/**/*.js"
+    ]
   }
 }
