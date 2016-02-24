@@ -45,7 +45,7 @@ function time(label, f, iters) {
 // ~330ms
 time('mori vec', function() {
   var v = m.vector();
-  for(var i = 0 ; i < 10000000; i++) {
+  for(var i = 0 ; i < 1000000; i++) {
     v = m.conj.f2(v, i);
   }
 });
@@ -53,14 +53,14 @@ time('mori vec', function() {
 // ~2500ms
 time('immu vec', function() {
   var l = Immutable.List();
-  for(var i = 0 ; i < 10000000; i++) {
+  for(var i = 0 ; i < 1000000; i++) {
     l = l.push(i);
   }
 });
 
 time('oak vec', function() {
   var l = new OakArray();
-  for(var i = 0 ; i < 10000000; i++) {
+  for(var i = 0 ; i < 1000000; i++) {
     l = l.push(i);
   }
 });
