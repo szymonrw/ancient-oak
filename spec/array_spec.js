@@ -2,6 +2,8 @@
 
 var OakArray = require("../lib/types/array")
 
+var toArray = require("../lib/slice")
+
 describe("Array", function () {
   describe("get", function () {
     var data, key, array
@@ -59,6 +61,25 @@ describe("Array", function () {
 
     it("maintains balanced tree", function () {
       expect(array.data).toEqual(data)
+    })
+  })
+
+  describe("forEach", function () {
+    it("executes function for each element", function () {
+      var array =
+          new OakArray()
+          .set(33, "asdf")
+          .set(10001, "qwer")
+
+      var expected_calls = [["asdf", 33, array],
+                            ["qwer", 10001, array]];
+      var calls = [];
+
+      array.forEach(function () {
+        calls.push(toArray(arguments))
+      })
+
+      expect(calls).toEqual(expected_calls)
     })
   })
 })
