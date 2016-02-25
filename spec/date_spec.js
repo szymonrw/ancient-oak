@@ -1,15 +1,15 @@
 "use strict";
 
-var _ = require("underscore");
+var _ = require("underscore")
 
-var store = require("../lib");
+var OakDate = require("../lib/types/date")
 
-describe("storing dates, ", function () {
+describe("OakDate", function () {
 
   describe("stored date", function () {
     it("is the same value as original", function () {
       var date = new Date();
-      var result = store(date).value;
+      var result = new OakDate(date).value;
 
       expect(result).toEqual(date.valueOf());
     });
@@ -17,7 +17,7 @@ describe("storing dates, ", function () {
 
   describe("allows getting date fields", function () {
     var date = new Date();
-    var stored = store(date);
+    var stored = new OakDate(date);
 
     var specs = {
       date: "getDate",
@@ -70,7 +70,7 @@ describe("storing dates, ", function () {
 
     _.forEach(specs, function (method, field) {
       it(field, function () {
-        expect(stored(field)).toBe(date[method]());
+        expect(stored.get(field)).toBe(date[method]());
       });
     });
   });
@@ -122,7 +122,7 @@ describe("storing dates, ", function () {
       it("set " + field, function () {
         var date = new Date(0);
         date[method](value);
-        var stored = store(new Date(0)).set(field, value);
+        var stored = new OakDate(new Date(0)).set(field, value);
         expect(stored.dump()).toEqual(date);
       });
     });
@@ -132,7 +132,7 @@ describe("storing dates, ", function () {
       it("update " + field, function () {
         var date = new Date(0);
         date[set_method](date[get_method]() + 1);
-        var stored = store(new Date(0)).update(field, function (value) {
+        var stored = new OakDate(new Date(0)).update(field, function (value) {
           return value + 1;
         });
         expect(stored.dump()).toEqual(date);
@@ -141,7 +141,7 @@ describe("storing dates, ", function () {
 
 
     it("with patch", function () {
-      var stored = store(new Date(0)).patch({ full_year: 1987, month: 10, date: 2 });
+      var stored = new OakDate(new Date(0)).patch({ full_year: 1987, month: 10, date: 2 });
       var date = new Date(1987, 10, 2);
       expect(stored.dump()).toEqual(date);
     });
@@ -149,7 +149,7 @@ describe("storing dates, ", function () {
 
   describe("implements dumping", function () {
     var date = new Date();
-    var stored = store(date);
+    var stored = new OakDate(date);
 
     it("with dump method", function () {
       expect(stored.dump()).toEqual(date);
