@@ -1,6 +1,5 @@
 var m = require("mori"),
-    OakArray = require("./lib/types/array"),
-    OakObject = require("./lib/types/object"),
+    oak = require("./lib"),
     Immutable = require("immutable");
 
 function time(label, f, iters) {
@@ -29,7 +28,7 @@ time('immu hash', function() {
 });
 
 time('oak hash', function () {
-  var hm = new OakObject;
+  var hm = oak({});
   for(var i = 0 ; i < 100000; i++) {
     hm = hm.set("foo"+i, i);
   }
@@ -62,7 +61,7 @@ time('immu vec', function() {
 });
 
 time('oak vec', function() {
-  var l = new OakArray();
+  var l = oak([]);
   for(var i = 0 ; i < 1000000; i++) {
     l = l.push(i);
   }
