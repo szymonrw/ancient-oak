@@ -4,15 +4,24 @@ var OakArray = require("../lib/types/array")
 
 describe("Array", function () {
   describe("get", function () {
-    it("reaches multi long-keyed data", function () {
-      var data = []
+    var data, key, array
+
+    beforeEach(function () {
+      data = []
       data[27] = []
       data[27][31] = "hello"
 
-      var key = (27 << 5) + 31
+      key = (27 << 5) + 31
 
-      var array = new OakArray(data, 2)
+      array = new OakArray(data, 2)
+    })
+
+    it("reaches multi long-keyed data", function () {
       expect(array.get(key)).toBe("hello")
+    })
+
+    it("returns undefined for missing element", function () {
+      expect(array.get(11111111)).toBeUndefined();
     })
   })
 

@@ -1,13 +1,15 @@
-"use strict";
+"use strict"
 
-var store = require("../lib");
+var OakObject = require("../lib/types/object")
 
-describe("store", function () {
-  describe("when setting a key that's a number", function () {
-    it("converts it to string", function () {
-      var v = store({}).set(123, 456);
-      expect(v(123)).toBe(456);
-      expect(v("123")).toBe(456);
-    });
-  });
-});
+describe("OakObject", function () {
+  it("sets and gets value", function () {
+    var obj = new OakObject()
+    expect(obj.set("asdf", "qwer").get("asdf")).toBe("qwer")
+  })
+
+  it("get returns undefined for wrong key", function () {
+    var obj = new OakObject()
+    expect(obj.get("asdf")).toBeUndefined()
+  })
+})

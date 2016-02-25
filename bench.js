@@ -1,5 +1,6 @@
 var m = require("mori"),
     OakArray = require("./lib/types/array"),
+    OakObject = require("./lib/types/object"),
     Immutable = require("immutable");
 
 function time(label, f, iters) {
@@ -8,29 +9,31 @@ function time(label, f, iters) {
     var s = new Date();
     f();
     console.log(label + ": Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
-    console.log("----------");
   }
 }
 
-// // ~180ms Node 0.10.35, 2.26ghz 2010 MBP
-// time('mori hash', function() {
-//   var hm = m.hashMap();
-//   for(var i = 0 ; i < 100000; i++) {
-//     for(var j = 0; j < 8; j++) {
-//       hm = m.assoc.f3(hm, "foo"+j, j);
-//     }
-//   }
-// });
+// ~180ms Node 0.10.35, 2.26ghz 2010 MBP
+time('mori hash', function() {
+  var hm = m.hashMap();
+  for(var i = 0 ; i < 100000; i++) {
+    hm = m.assoc.f3(hm, "foo"+i, i);
+  }
+});
 
-// // ~2000ms
-// time('immu hash', function() {
-//   var hm = Immutable.Map();
-//   for(var i = 0 ; i < 100000; i++) {
-//     for(var j = 0; j < 8; j++) {
-//       hm = hm.set("foo"+j, j);
-//     }
-//   }
-// });
+// ~2000ms
+time('immu hash', function() {
+  var hm = Immutable.Map();
+  for(var i = 0 ; i < 100000; i++) {
+    hm = hm.set("foo"+i, i);
+  }
+});
+
+time('oak hash', function () {
+  var hm = new OakObject;
+  for(var i = 0 ; i < 100000; i++) {
+    hm = hm.set("foo"+i, i);
+  }
+});
 
 // time('oak hash', function() {
 //   var hm = oak({});
