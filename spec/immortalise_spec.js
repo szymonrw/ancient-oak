@@ -55,11 +55,18 @@ describe("immortalise", function () {
   it("stores properly array of objects", function () {
     var data = immortalise([{a: 1}, {b: 2}, {c: 3}])
 
-    expect(data instanceof OakArray).toBe(true)
-    expect(data.length).toBe(3)
-    expect(data.get(0) instanceof OakObject).toBe(true)
-    expect(data.get(1) instanceof OakObject).toBe(true)
-    expect(data.get(2) instanceof OakObject).toBe(true)
+    expect(data instanceof OakArray)
+      .toBe(true, "instanceof OakArray")
+    expect(data.length)
+      .toBe(3, "array's length")
+
+    expect(data.get(0) instanceof OakObject)
+      .toBe(true, "instanceof OakObject")
+    expect(data.get(1) instanceof OakObject)
+      .toBe(true, "instanceof OakObject")
+    expect(data.get(2) instanceof OakObject)
+      .toBe(true, "instanceof OakObject")
+
     expect(data.get(0).get("a")).toBe(1)
     expect(data.get(1).get("b")).toBe(2)
     expect(data.get(2).get("c")).toBe(3)
