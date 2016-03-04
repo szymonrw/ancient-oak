@@ -33,8 +33,11 @@
   },
   "devDependencies": {
     "browserify": "3",
+    "co-sqlite3": "^0.1.3",
     "coveralls": "^2.11.6",
+    "immutable": "^3.7.6",
     "jasmine": "^2.4.1",
+    "mori": "^0.3.2",
     "nodemon": "^1.9.0",
     "nyc": "^5.6.0",
     "uglify-js": "*",

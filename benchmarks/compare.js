@@ -1,5 +1,5 @@
 var m = require("mori"),
-    oak = require("./lib"),
+    oak = require("../lib"),
     Immutable = require("immutable");
 
 function time(label, f, iters) {
