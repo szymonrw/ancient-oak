@@ -9,9 +9,7 @@ var DB = sqlite("./collisions.sqlite3").then(function (db) {
   ).then(function () { return db })
 })
 
-var collisions = {}
-
-var start = "  ";
+var start = "    ";
 var end = start.replace(/ /g, "~")
 
 var codes = Array.prototype.slice.apply(start).map(function (x) {
